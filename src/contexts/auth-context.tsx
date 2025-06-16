@@ -19,10 +19,11 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
-  signInWithEmail: (email: string, pass: string) => Promise<void>; // Promise<UserCredential>
-  signUpWithEmail: (email: string, pass: string) => Promise<void>; // Promise<UserCredential>
-  signInWithGoogle: () => Promise<void>; // Promise<UserCredential>
+  signInWithEmail: (email: string, pass: string) => Promise<void>; 
+  signUpWithEmail: (email: string, pass: string) => Promise<void>; 
+  signInWithGoogle: () => Promise<void>; 
   signOut: () => Promise<void>;
+  updateUserProfile: (newDetails: Partial<Pick<User, 'displayName' | 'photoURL'>>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,29 +48,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Mock initial auth check
     const mockUserJson = localStorage.getItem('mockUser');
     if (mockUserJson) {
       setUser(JSON.parse(mockUserJson));
     }
     setLoading(false);
-
-    // Real Firebase auth state listener:
-    // const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-    //   if (firebaseUser) {
-    //     setUser({ id: firebaseUser.uid, email: firebaseUser.email, displayName: firebaseUser.displayName, photoURL: firebaseUser.photoURL });
-    //   } else {
-    //     setUser(null);
-    //   }
-    //   setLoading(false);
-    // });
-    // return () => unsubscribe();
   }, []);
+
+  const updateUserProfile = async (newDetails: Partial<Pick<User, 'displayName' | 'photoURL'>>) => {
+    if (!user) {
+      setError("User not logged in to update profile.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    // Mock profile update
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const updatedUser = { ...user, ...newDetails };
+    setUser(updatedUser);
+    localStorage.setItem('mockUser', JSON.stringify(updatedUser));
+    setLoading(false);
+  };
 
   const signInWithEmail = async (email: string, _pass: string) => {
     setLoading(true);
     setError(null);
-    // Mock login
     await new Promise(resolve => setTimeout(resolve, 1000));
     const mockUser: User = { id: 'mock-user-id-email', email: email, displayName: email.split('@')[0] };
     setUser(mockUser);
@@ -81,7 +84,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signUpWithEmail = async (email: string, _pass: string) => {
     setLoading(true);
     setError(null);
-    // Mock signup
     await new Promise(resolve => setTimeout(resolve, 1000));
     const mockUser: User = { id: 'mock-user-id-signup', email: email, displayName: email.split('@')[0] };
     setUser(mockUser);
@@ -93,43 +95,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signInWithGoogle = async () => {
     setLoading(true);
     setError(null);
-    // Mock Google Sign-In
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const mockUser: User = { id: 'mock-user-id-google', email: 'googleuser@example.com', displayName: 'Google User', photoURL: 'https://placehold.co/100x100' };
+    const mockUser: User = { id: 'mock-user-id-google', email: 'googleuser@example.com', displayName: 'Google User', photoURL: 'https://placehold.co/100x100.png' };
     setUser(mockUser);
     localStorage.setItem('mockUser', JSON.stringify(mockUser));
     setLoading(false);
     router.push('/dashboard');
-    // Real Google Sign-In
-    // const provider = new GoogleAuthProvider();
-    // try {
-    //   await signInWithPopup(auth, provider);
-    //   router.push('/dashboard');
-    // } catch (e: any) {
-    //   setError(e.message);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   const signOut = async () => {
     setLoading(true);
     setError(null);
-    // Mock sign out
     await new Promise(resolve => setTimeout(resolve, 500));
     setUser(null);
     localStorage.removeItem('mockUser');
     setLoading(false);
     router.push('/login');
-    // Real sign out
-    // try {
-    //   await firebaseSignOut(auth);
-    //   router.push('/login');
-    // } catch (e: any) {
-    //   setError(e.message);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   const value = {
@@ -140,6 +121,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     signUpWithEmail,
     signInWithGoogle,
     signOut,
+    updateUserProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

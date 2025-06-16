@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Shield, LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles, Edit3 } from 'lucide-react';
+import { Shield, LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles, Edit3, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth, User } from '@/components/auth-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -72,6 +72,13 @@ export default function Header() {
                     {user.displayName && <p className="text-xs leading-none text-muted-foreground">{user.email}</p>}
                   </div>
                 </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/profile">
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
