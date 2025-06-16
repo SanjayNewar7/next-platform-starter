@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { Button } from '@/components/ui/button';
 
 export default function SignupPage() {
   return (

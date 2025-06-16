@@ -2,7 +2,8 @@
 'use server';
 
 /**
- * @fileOverview An AI agent that provides personalized boundary-setting strategies.
+ * @fileOverview An AI agent that provides personalized boundary-setting strategies,
+ *               with consideration for a Nepali audience.
  *
  * - getBoundaryRecommendation - A function that provides boundary recommendations.
  * - BoundaryRecommendationInput - The input type for the getBoundaryRecommendation function.
@@ -12,7 +13,17 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const BoundaryTypes = [
+  "Financial", 
+  "Educational", 
+  "Social Relationships", 
+  "Work-Life Balance", 
+  "Personal Time & Space"
+] as const;
+
 const BoundaryRecommendationInputSchema = z.object({
+  boundaryType: z.enum(BoundaryTypes)
+    .describe('The type of boundary the user needs help with.'),
   situation: z
     .string()
     .describe('A detailed description of the situation where boundary setting is needed.'),
@@ -29,14 +40,14 @@ export type BoundaryRecommendationInput = z.infer<typeof BoundaryRecommendationI
 const BoundaryRecommendationOutputSchema = z.object({
   recommendation: z
     .string()
-    .describe('A personalized strategy for setting boundaries in the given situation, considering the desired outcome and past attempts.'),
+    .describe('A personalized strategy for setting boundaries in the given situation, considering the desired outcome, past attempts, and boundary type.'),
   explanation: z
     .string()
-    .describe('A detailed explanation of why the recommended strategy is appropriate and how it addresses the user\'s needs.'),
+    .describe('A detailed explanation of why the recommended strategy is appropriate and how it addresses the user\'s needs, including Nepali cultural context where relevant.'),
   examplePhrases: z
     .string()
     .optional()
-    .describe('Optional: Example phrases the user can use to communicate their boundaries in this situation.'),
+    .describe('Optional: Example phrases the user can use to communicate their boundaries in this situation, ideally adaptable for Nepali interactions.'),
 });
 export type BoundaryRecommendationOutput = z.infer<typeof BoundaryRecommendationOutputSchema>;
 
@@ -48,18 +59,23 @@ const prompt = ai.definePrompt({
   name: 'boundaryRecommendationPrompt',
   input: {schema: BoundaryRecommendationInputSchema},
   output: {schema: BoundaryRecommendationOutputSchema},
-  prompt: `You are a personal boundary expert. A user will describe a situation, their desired outcome, and optionally, previous attempts to set boundaries.
+  prompt: `You are a personal boundary expert specializing in providing advice relevant to a Nepali audience.
+A user will describe a situation, their desired outcome, the type of boundary, and optionally, previous attempts to set boundaries.
 
-  Your task is to provide a personalized boundary-setting strategy, explain why it\'s appropriate, and suggest example phrases.
+Your task is to provide a personalized boundary-setting strategy.
+Explain why it's appropriate, considering Nepali cultural nuances and contexts where applicable.
+Suggest example phrases that can be adapted for communication in Nepal.
+For 'Financial' boundaries, advice should be relevant to Nepal, using NPR (Nepali Rupees) as the currency context if amounts are discussed, and address common financial situations.
 
-  Situation: {{{situation}}}
-  Desired Outcome: {{{desiredOutcome}}}
-  Past Attempts: {{{pastAttempts}}}
+Boundary Type: {{{boundaryType}}}
+Situation: {{{situation}}}
+Desired Outcome: {{{desiredOutcome}}}
+Past Attempts: {{{pastAttempts}}}
 
-  Provide your response in the following format:
-  Recommendation: [Your recommended strategy]
-  Explanation: [A detailed explanation of why the strategy is appropriate]
-  Example Phrases: [Optional: Example phrases the user can use]
+Provide your response in the following format:
+Recommendation: [Your recommended strategy]
+Explanation: [A detailed explanation of why the strategy is appropriate, including relevant Nepali cultural context]
+Example Phrases: [Optional: Example phrases the user can use, adaptable for Nepali interactions]
 `,
 });
 

@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ShieldCheck, MessageSquareHeart, BarChart3 } from 'lucide-react';
-import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -19,12 +18,12 @@ export default function HomePage() {
               Welcome to <span className="text-primary">BoundaryWise</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Empowering you to understand, create, and maintain healthy personal boundaries for a more fulfilling life.
+              Tapailai swagat cha! Understand, create, and maintain healthy personal boundaries for a more fulfilling life in Nepal.
             </p>
             <div className="flex justify-center gap-4">
               <Button size="lg" asChild>
                 <Link href="/signup">
-                  Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
+                  Start Your Journey (सुरु गर्नुहोस्) <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -45,8 +44,8 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8">
               <FeatureCard
                 icon={<MessageSquareHeart className="h-10 w-10 text-primary mb-4" />}
-                title="AI Boundary Assistant"
-                description="Receive personalized, AI-powered suggestions for setting boundaries in challenging situations."
+                title="AI Boundary Assistant (Nepali Context)"
+                description="Receive personalized, AI-powered suggestions for various boundaries (Financial, Social, etc.), considering Nepali cultural nuances."
                 link="/assistant"
                 linkText="Try the Assistant"
               />
@@ -59,8 +58,8 @@ export default function HomePage() {
               />
               <FeatureCard
                 icon={<ShieldCheck className="h-10 w-10 text-primary mb-4" />}
-                title="Secure Authentication"
-                description="Your personal journey is safe with us. Easy sign-up and login with email or Google."
+                title="Secure & Easy Access"
+                description="Your personal journey is safe. Easy sign-up and login with email or Google."
                 link="/signup"
                 linkText="Create Account"
               />
@@ -72,10 +71,10 @@ export default function HomePage() {
         <section className="py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
              <h2 className="text-3xl font-headline font-semibold text-foreground mb-6">
-              Ready to Build Healthier Relationships?
+              Ready to Build Healthier Relationships in Your Life?
             </h2>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-              Join BoundaryWise today and start your journey towards personal empowerment and well-being.
+              Join BoundaryWise today and start your journey towards personal empowerment and well-being, with support tailored for you.
             </p>
             <Button size="lg" asChild>
               <Link href="/signup">
@@ -113,4 +112,3 @@ function FeatureCard({ icon, title, description, link, linkText }: FeatureCardPr
     </div>
   );
 }
-

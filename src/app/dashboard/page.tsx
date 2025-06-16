@@ -2,17 +2,20 @@
 import AppLayout from '@/components/AppLayout';
 import ProgressChart from '@/components/dashboard/ProgressChart';
 import SummaryCard from '@/components/dashboard/SummaryCard';
-import { Target, CheckCircle, ShieldAlert, TrendingUp } from 'lucide-react';
+import { Target, CheckCircle, ShieldAlert, TrendingUp, ShieldCheck, Info } from 'lucide-react';
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from 'next/link';
 
 export default function DashboardPage() {
   // Mock data for summary cards
   const summaryData = [
-    { title: "Total Boundaries Defined", value: "25", icon: Target, description: "Across all areas of life." },
+    { title: "Total Boundaries Defined", value: "25", icon: Target, description: "Across various areas of life." },
     { title: "Successful Implementations", value: "18", icon: CheckCircle, description: "Boundaries respected.", trend: "+3 this week", trendColor: "text-green-600" as "text-green-600" | "text-red-600" },
     { title: "Challenging Situations", value: "7", icon: ShieldAlert, description: "Areas needing more focus." },
     { title: "Overall Progress", value: "72%", icon: TrendingUp, description: "Boundary strength score.", trend: "+5% last month", trendColor: "text-green-600" as "text-green-600" | "text-red-600" },
@@ -25,9 +28,9 @@ export default function DashboardPage() {
         
         <Alert className="bg-secondary border-primary/50">
           <ShieldCheck className="h-5 w-5 text-primary" />
-          <AlertTitle className="font-headline text-primary">Welcome Back!</AlertTitle>
+          <AlertTitle className="font-headline text-primary">Namaste! Welcome Back!</AlertTitle>
           <AlertDescription className="text-primary-foreground/80">
-            This is your space to track and celebrate your journey in setting healthy boundaries. Remember, progress is unique to you.
+            Track your journey in setting healthy boundaries. Remember, progress is unique to you. Tapai ko pragati ko lagi शुभकामना! (Best wishes for your progress!)
           </AlertDescription>
         </Alert>
 
@@ -51,15 +54,16 @@ export default function DashboardPage() {
 
         <Card className="shadow-lg bg-card">
           <CardHeader>
-            <CardTitle className="font-headline">Next Steps & Focus Areas</CardTitle>
+            <CardTitle className="font-headline flex items-center gap-2"><Info className="text-primary"/> Next Steps & Focus Areas</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="list-disc list-inside space-y-2 text-foreground">
-              <li>Review your "Challenging Situations" and identify patterns.</li>
-              <li>Practice one new boundary-setting phrase this week from the AI Assistant.</li>
-              <li>Reflect on a recent situation where you successfully maintained a boundary.</li>
+              <li>Review "Challenging Situations" and identify patterns.</li>
+              <li>Explore setting new boundaries (e.g., Financial, Work-Life) using the AI Assistant.</li>
+              <li>Practice one new boundary-setting phrase this week.</li>
+              <li>Reflect on a recent success in maintaining a boundary.</li>
             </ul>
-            <Button className="mt-4">
+            <Button className="mt-4" asChild>
               <Link href="/assistant">Get AI Boundary Advice</Link>
             </Button>
           </CardContent>
@@ -69,13 +73,3 @@ export default function DashboardPage() {
     </AppLayout>
   );
 }
-
-// Dummy components for Card and Button if not already defined or to avoid import issues during generation
-// In a real scenario, these would be imported from "@/components/ui/..."
-const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => <div className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}>{children}</div>;
-const CardHeader = ({ children, className }: { children: React.ReactNode, className?: string }) => <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>{children}</div>;
-const CardTitle = ({ children, className }: { children: React.ReactNode, className?: string }) => <h3 className={`text-2xl font-semibold leading-none tracking-tight ${className}`}>{children}</h3>;
-const CardContent = ({ children, className }: { children: React.ReactNode, className?: string }) => <div className={`p-6 pt-0 ${className}`}>{children}</div>;
-const Button = ({ children, className, variant }: { children: React.ReactNode, className?: string, variant?: string }) => <button className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 ${className}`}>{children}</button>;
-import Link from 'next/link';
-import { ShieldCheck } from 'lucide-react'; // Ensure ShieldCheck is imported if used.
