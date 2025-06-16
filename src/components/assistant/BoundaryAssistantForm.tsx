@@ -17,22 +17,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Sparkles, Send, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Loader2, Sparkles, Send, CheckCircle, AlertTriangle, ThumbsUp, Frown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { getBoundaryRecommendation, type BoundaryRecommendationInput, type BoundaryRecommendationOutput } from '@/ai/flows/boundary-recommendation';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const boundaryTypes = [
-  "Financial", 
-  "Educational", 
-  "Social Relationships", 
-  "Work-Life Balance", 
-  "Personal Time & Space"
-] as const;
+import { incrementStat, allBoundaryTypes, type BoundaryTypeName } from '@/lib/userData';
 
 const formSchema = z.object({
-  boundaryType: z.enum(boundaryTypes, {
+  boundaryType: z.enum(allBoundaryTypes, {
     required_error: "Please select a type of boundary.",
   }),
   situation: z.string().min(10, { message: "Please describe the situation in at least 10 characters." }).max(1000),
@@ -44,6 +37,7 @@ export default function BoundaryAssistantForm() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<BoundaryRecommendationOutput | null>(null);
+  const [currentBoundaryType, setCurrentBoundaryType] = useState<BoundaryTypeName | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,6 +51,7 @@ export default function BoundaryAssistantForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     setRecommendation(null);
+    setCurrentBoundaryType(values.boundaryType); // Store for logging success/challenge
     try {
       const input: BoundaryRecommendationInput = {
         boundaryType: values.boundaryType,
@@ -66,11 +61,12 @@ export default function BoundaryAssistantForm() {
       };
       const result = await getBoundaryRecommendation(input);
       setRecommendation(result);
-      // Toast is disabled for now as per user request to only use for errors
-      // toast({
-      //   title: "Recommendation Generated",
-      //   description: "AI has provided a boundary strategy.",
-      // });
+      incrementStat(values.boundaryType, 'defined');
+      toast({
+        title: "Recommendation Generated",
+        description: "AI has provided a boundary strategy. You can log your experience below.",
+        variant: "default", 
+      });
     } catch (e: any) {
       console.error("Error getting recommendation:", e);
       toast({
@@ -82,6 +78,29 @@ export default function BoundaryAssistantForm() {
       setLoading(false);
     }
   }
+
+  const handleLogSuccess = () => {
+    if (currentBoundaryType) {
+      incrementStat(currentBoundaryType, 'successful');
+      toast({
+        title: "Success Logged!",
+        description: `Great job implementing your ${currentBoundaryType} boundary.`,
+        variant: "default",
+      });
+    }
+  };
+
+  const handleLogChallenge = () => {
+    if (currentBoundaryType) {
+      incrementStat(currentBoundaryType, 'challenged');
+      toast({
+        title: "Challenge Logged",
+        description: `Noted a challenge with your ${currentBoundaryType} boundary. Keep trying!`,
+        variant: "default", 
+      });
+    }
+  };
+
 
   return (
     <div className="space-y-6">
@@ -110,7 +129,7 @@ export default function BoundaryAssistantForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {boundaryTypes.map((type) => (
+                        {allBoundaryTypes.map((type) => (
                           <SelectItem key={type} value={type}>
                             {type}
                           </SelectItem>
@@ -180,7 +199,7 @@ export default function BoundaryAssistantForm() {
       {loading && (
         <div className="flex justify-center items-center p-8">
           <Loader2 className="h-10 w-10 animate-spin text-primary" />
-          <p className="ml-3 text-muted-foreground">Generating your personalized strategy (considering Nepali context)...</p>
+          <p className="ml-3 text-muted-foreground">Generating your personalized strategy...</p>
         </div>
       )}
 
@@ -210,6 +229,18 @@ export default function BoundaryAssistantForm() {
                 </Alert>
               </div>
             )}
+            <div className="border-t pt-4 mt-4 space-y-3">
+              <h4 className="font-semibold text-foreground mb-2">Log Your Experience:</h4>
+              <p className="text-sm text-muted-foreground">Did you try implementing this type of boundary?</p>
+              <div className="flex gap-4">
+                <Button onClick={handleLogSuccess} variant="outline" className="border-green-500 hover:bg-green-500/10 text-green-600 hover:text-green-700">
+                  <ThumbsUp className="mr-2 h-4 w-4" /> It was Successful!
+                </Button>
+                <Button onClick={handleLogChallenge} variant="outline" className="border-orange-500 hover:bg-orange-500/10 text-orange-600 hover:text-orange-700">
+                  <Frown className="mr-2 h-4 w-4" /> Faced a Challenge
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}

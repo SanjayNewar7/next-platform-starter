@@ -7,8 +7,9 @@ interface SummaryCardProps {
   value: string;
   icon: LucideIcon;
   description?: string;
-  trend?: string; // e.g., "+5% from last month"
-  trendColor?: 'text-green-600' | 'text-red-600'; // Tailwind classes for trend color
+  // Trend related props are now optional as they are not easily derived from simple localStorage stats
+  trend?: string; 
+  trendColor?: 'text-green-600' | 'text-red-600';
 }
 
 export default function SummaryCard({ title, value, icon: Icon, description, trend, trendColor }: SummaryCardProps) {

@@ -1,8 +1,9 @@
 
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import React, { useEffect, useState } from "react"
+import { BarChart3, TrendingUp } from "lucide-react"
+import { Bar, BarChart as RechartsBarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts"
 import {
   Card,
   CardContent,
@@ -15,73 +16,101 @@ import {
   ChartContainer,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { type AggregatedStats, allBoundaryTypes, BoundaryTypeName } from '@/lib/userData';
 
-// Mock data - this data is illustrative.
-const chartData = [
-  { month: "Jan", boundaryStrength: 30, boundariesSet: 5 },
-  { month: "Feb", boundaryStrength: 45, boundariesSet: 8 },
-  { month: "Mar", boundaryStrength: 50, boundariesSet: 7 },
-  { month: "Apr", boundaryStrength: 65, boundariesSet: 10 },
-  { month: "May", boundaryStrength: 70, boundariesSet: 12 },
-  { month: "Jun", boundaryStrength: 80, boundariesSet: 15 },
-]
+interface ProgressChartProps {
+  currentStats: AggregatedStats;
+}
+
+// Define colors for the chart bars
+const chartColors = {
+  defined: "hsl(var(--chart-1))",     // Primary blue
+  successful: "hsl(var(--chart-2))",  // Lighter blue
+  challenged: "hsl(var(--chart-3))",  // Even lighter blue / or a contrasting color
+};
 
 const chartConfig = {
-  boundaryStrength: {
-    label: "Boundary Strength (Illustrative)",
-    color: "hsl(var(--chart-1))",
+  defined: {
+    label: "Defined",
+    color: chartColors.defined,
   },
-  boundariesSet: {
-    label: "Boundaries Set (Illustrative)",
-    color: "hsl(var(--chart-2))",
+  successful: {
+    label: "Successful",
+    color: chartColors.successful,
+  },
+  challenged: {
+    label: "Challenged",
+    color: chartColors.challenged,
   }
 } satisfies Record<string, { label: string; color: string }>;
 
 
-export default function ProgressChart() {
+export default function ProgressChart({ currentStats }: ProgressChartProps) {
+  const [chartData, setChartData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (currentStats && currentStats.byType) {
+      const data = allBoundaryTypes.map(type => ({
+        name: type,
+        defined: currentStats.byType[type]?.defined || 0,
+        successful: currentStats.byType[type]?.successful || 0,
+        challenged: currentStats.byType[type]?.challenged || 0,
+      }));
+      setChartData(data);
+    }
+  }, [currentStats]);
+
   return (
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
-          <TrendingUp className="h-6 w-6 text-primary" />
-          Boundary Progression
+          <BarChart3 className="h-6 w-6 text-primary" />
+          Boundary Activity by Type
         </CardTitle>
-        <CardDescription>Illustrative view of your boundary strength and activity over 6 months. This will update with your interactions.</CardDescription>
+        <CardDescription>Counts of defined, successful, and challenged boundaries for each category based on your logged experiences.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
-              <YAxis 
-                yAxisId="left" 
-                orientation="left" 
-                stroke="hsl(var(--foreground))" 
-                tickLine={false} 
-                axisLine={false}
-                tickMargin={8}
-                label={{ value: 'Strength Score', angle: -90, position: 'insideLeft', fill: 'hsl(var(--muted-foreground))' }}
-              />
-              <YAxis 
-                yAxisId="right" 
-                orientation="right" 
-                stroke="hsl(var(--foreground))" 
-                tickLine={false} 
-                axisLine={false}
-                tickMargin={8}
-                label={{ value: 'Count', angle: 90, position: 'insideRight', fill: 'hsl(var(--muted-foreground))' }}
-              />
-              <Tooltip cursor={{fill: 'hsl(var(--muted))', radius: 4}} content={<ChartTooltipContent />} />
-              <Bar dataKey="boundaryStrength" yAxisId="left" fill="var(--color-boundaryStrength)" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="boundariesSet" yAxisId="right" fill="var(--color-boundariesSet)" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+        {chartData.length > 0 ? (
+          <ChartContainer config={chartConfig} className="h-[350px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsBarChart data={chartData} margin={{ top: 5, right: 20, left: -15, bottom: 50 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis 
+                  dataKey="name" 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tickMargin={10} 
+                  angle={-30} 
+                  textAnchor="end"
+                  height={60} // Adjust height to accommodate angled labels
+                  interval={0} // Show all labels
+                  style={{ fontSize: '12px' }}
+                />
+                <YAxis 
+                  stroke="hsl(var(--foreground))" 
+                  tickLine={false} 
+                  axisLine={false}
+                  tickMargin={8}
+                  allowDecimals={false}
+                  label={{ value: 'Count', angle: -90, position: 'insideLeft', fill: 'hsl(var(--muted-foreground))', dy: 40 }}
+                />
+                <Tooltip cursor={{fill: 'hsl(var(--muted))', radius: 4}} content={<ChartTooltipContent />} />
+                <Legend wrapperStyle={{paddingTop: '20px'}}/>
+                <Bar dataKey="defined" fill="var(--color-defined)" radius={[4, 4, 0, 0]} barSize={20} />
+                <Bar dataKey="successful" fill="var(--color-successful)" radius={[4, 4, 0, 0]} barSize={20} />
+                <Bar dataKey="challenged" fill="var(--color-challenged)" radius={[4, 4, 0, 0]} barSize={20} />
+              </RechartsBarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        ) : (
+          <div className="flex items-center justify-center h-[350px]">
+            <p className="text-muted-foreground">No data to display yet. Start by defining boundaries with the AI Assistant!</p>
+          </div>
+        )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="text-muted-foreground">
-          Keep using the AI Assistant to define boundaries. Consistent effort helps build stronger boundaries.
+          This chart updates as you log your boundary-setting experiences. Consistent effort helps clarify your journey.
         </div>
       </CardFooter>
     </Card>
