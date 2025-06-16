@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { BarChart3, TrendingUp } from "lucide-react"
+import { BarChart3 } from "lucide-react"
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts"
 import {
   Card,
@@ -16,24 +16,24 @@ import {
   ChartContainer,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { type AggregatedStats, allBoundaryTypes, BoundaryTypeName } from '@/lib/userData';
+import { type AggregatedStats, allBoundaryTypes } from '@/lib/userData';
 
 interface ProgressChartProps {
   currentStats: AggregatedStats;
 }
 
-// Define colors for the chart bars
 const chartColors = {
-  defined: "hsl(var(--chart-1))",     // Primary blue
+  // defined: "hsl(var(--chart-1))", // Primary blue - 'defined' now includes pending, successful, challenged.
   successful: "hsl(var(--chart-2))",  // Lighter blue
-  challenged: "hsl(var(--chart-3))",  // Even lighter blue / or a contrasting color
+  challenged: "hsl(var(--chart-3))",  // Even lighter blue
+  pending: "hsl(var(--chart-4))",     // Grayish blue for pending
 };
 
 const chartConfig = {
-  defined: {
-    label: "Defined",
-    color: chartColors.defined,
-  },
+  // defined: {
+  //   label: "Total Defined", // This could represent the total bar height if stacked, or a separate metric
+  //   color: chartColors.defined,
+  // },
   successful: {
     label: "Successful",
     color: chartColors.successful,
@@ -41,6 +41,10 @@ const chartConfig = {
   challenged: {
     label: "Challenged",
     color: chartColors.challenged,
+  },
+  pending: {
+    label: "Pending Log",
+    color: chartColors.pending,
   }
 } satisfies Record<string, { label: string; color: string }>;
 
@@ -52,9 +56,10 @@ export default function ProgressChart({ currentStats }: ProgressChartProps) {
     if (currentStats && currentStats.byType) {
       const data = allBoundaryTypes.map(type => ({
         name: type,
-        defined: currentStats.byType[type]?.defined || 0,
+        // defined: currentStats.byType[type]?.defined || 0, // This is the total for the type
         successful: currentStats.byType[type]?.successful || 0,
         challenged: currentStats.byType[type]?.challenged || 0,
+        pending: currentStats.byType[type]?.pending || 0,
       }));
       setChartData(data);
     }
@@ -65,9 +70,9 @@ export default function ProgressChart({ currentStats }: ProgressChartProps) {
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
           <BarChart3 className="h-6 w-6 text-primary" />
-          Boundary Activity by Type
+          Boundary Outcomes by Type
         </CardTitle>
-        <CardDescription>Counts of defined, successful, and challenged boundaries for each category based on your logged experiences.</CardDescription>
+        <CardDescription>Status of boundaries you've defined with the AI: successful, challenged, or pending log.</CardDescription>
       </CardHeader>
       <CardContent>
         {chartData.length > 0 ? (
@@ -82,8 +87,8 @@ export default function ProgressChart({ currentStats }: ProgressChartProps) {
                   tickMargin={10} 
                   angle={-30} 
                   textAnchor="end"
-                  height={60} // Adjust height to accommodate angled labels
-                  interval={0} // Show all labels
+                  height={70} // Increased height for angled labels
+                  interval={0} 
                   style={{ fontSize: '12px' }}
                 />
                 <YAxis 
@@ -96,23 +101,26 @@ export default function ProgressChart({ currentStats }: ProgressChartProps) {
                 />
                 <Tooltip cursor={{fill: 'hsl(var(--muted))', radius: 4}} content={<ChartTooltipContent />} />
                 <Legend wrapperStyle={{paddingTop: '20px'}}/>
-                <Bar dataKey="defined" fill="var(--color-defined)" radius={[4, 4, 0, 0]} barSize={20} />
-                <Bar dataKey="successful" fill="var(--color-successful)" radius={[4, 4, 0, 0]} barSize={20} />
-                <Bar dataKey="challenged" fill="var(--color-challenged)" radius={[4, 4, 0, 0]} barSize={20} />
+                {/* Bar for 'defined' could be used as a background or stacked total if desired */}
+                {/* <Bar dataKey="defined" fill="var(--color-defined)" radius={[4, 4, 0, 0]} barSize={20} /> */}
+                <Bar dataKey="successful" stackId="a" fill="var(--color-successful)" radius={[4, 4, 0, 0]} barSize={25} />
+                <Bar dataKey="challenged" stackId="a" fill="var(--color-challenged)" radius={[0,0,0,0]} barSize={25} />
+                <Bar dataKey="pending" stackId="a" fill="var(--color-pending)" radius={[0,0,4,4]} barSize={25} />
               </RechartsBarChart>
             </ResponsiveContainer>
           </ChartContainer>
         ) : (
           <div className="flex items-center justify-center h-[350px]">
-            <p className="text-muted-foreground">No data to display yet. Start by defining boundaries with the AI Assistant!</p>
+            <p className="text-muted-foreground">No data to display yet. Use the AI Assistant to define some boundaries!</p>
           </div>
         )}
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="text-muted-foreground">
-          This chart updates as you log your boundary-setting experiences. Consistent effort helps clarify your journey.
+          This chart updates as you define boundaries with the AI and log your experiences.
         </div>
       </CardFooter>
     </Card>
   )
 }
+

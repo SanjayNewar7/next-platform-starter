@@ -19,10 +19,10 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Sparkles, Send } from "lucide-react";
 import { useState } from "react";
-import { getBoundaryRecommendation, type BoundaryRecommendationInput, type BoundaryRecommendationOutput } from '@/ai/flows/boundary-recommendation';
+import { getBoundaryRecommendation, type BoundaryRecommendationOutput } from '@/ai/flows/boundary-recommendation';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { incrementStat, allBoundaryTypes, type BoundaryTypeName } from '@/lib/userData';
+import { addBoundary, allBoundaryTypes, type BoundaryTypeName } from '@/lib/userData'; // Updated import
 import Link from "next/link";
 
 const formSchema = z.object({
@@ -38,8 +38,6 @@ export default function BoundaryAssistantForm() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<BoundaryRecommendationOutput | null>(null);
-  // currentBoundaryType is no longer needed here as logging is moved
-  // const [currentBoundaryType, setCurrentBoundaryType] = useState<BoundaryTypeName | null>(null);
 
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,22 +52,28 @@ export default function BoundaryAssistantForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     setRecommendation(null);
-    // setCurrentBoundaryType(values.boundaryType); // No longer needed here
     try {
-      const input: BoundaryRecommendationInput = {
+      const aiInput = { // Renamed to avoid conflict with Genkit's 'input'
         boundaryType: values.boundaryType,
         situation: values.situation,
         desiredOutcome: values.desiredOutcome,
         pastAttempts: values.pastAttempts || undefined,
       };
-      const result = await getBoundaryRecommendation(input);
+      const result = await getBoundaryRecommendation(aiInput);
       setRecommendation(result);
-      incrementStat(values.boundaryType, 'defined'); // Still log 'defined' when a recommendation is fetched
+      
+      // Save the defined boundary
+      addBoundary({
+        boundaryType: values.boundaryType,
+        situation: values.situation, // Save the user's situation
+        recommendation: result.recommendation, // Save AI's primary recommendation
+      });
+
       toast({
-        title: "Recommendation Generated",
+        title: "Recommendation Generated & Saved",
         description: (
           <span>
-            AI has provided a boundary strategy. You can log your real-world experience on the{' '}
+            AI has provided a boundary strategy. This has been saved. You can log your real-world experience on the{' '}
             <Button variant="link" asChild className="p-0 h-auto text-primary">
               <Link href="/log-experience">Log Experience page</Link>
             </Button>
@@ -77,7 +81,7 @@ export default function BoundaryAssistantForm() {
           </span>
         ),
         variant: "default",
-        duration: 10000, // Give user more time to see the link
+        duration: 10000, 
       });
     } catch (e: any) {
       console.error("Error getting recommendation:", e);
@@ -91,7 +95,6 @@ export default function BoundaryAssistantForm() {
     }
   }
 
-  // handleLogSuccess and handleLogChallenge are removed as this functionality is now on a separate page.
 
   return (
     <div className="space-y-6">
@@ -101,7 +104,7 @@ export default function BoundaryAssistantForm() {
             <Sparkles className="h-7 w-7 text-primary" /> AI Boundary Assistant
           </CardTitle>
           <CardDescription>
-            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context. Each recommendation you get is counted as a 'defined' boundary on your dashboard.
+            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context. Each recommendation you get is saved and counted on your dashboard.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -222,11 +225,11 @@ export default function BoundaryAssistantForm() {
             )}
             <div className="border-t pt-4 mt-4">
                 <p className="text-sm text-muted-foreground">
-                  Remember to visit the{' '}
+                  This advice has been saved. When you're ready, visit the{' '}
                   <Button variant="link" asChild className="p-0 h-auto text-primary -ml-1">
                      <Link href="/log-experience">Log Experience page</Link>
                   </Button>
-                  {' '}to record how implementing this type of boundary went for you.
+                  {' '}to record how implementing this boundary went for you.
                 </p>
             </div>
           </CardContent>

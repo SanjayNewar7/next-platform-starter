@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import AppLayout from '@/components/AppLayout';
 import ProgressChart from '@/components/dashboard/ProgressChart';
 import SummaryCard from '@/components/dashboard/SummaryCard';
-import { Target, CheckCircle, ShieldAlert, TrendingUp, ShieldCheck, Info, Edit3 } from 'lucide-react';
+import { Target, CheckCircle, ShieldAlert, TrendingUp, ShieldCheck, Info, Edit3, Hourglass } from 'lucide-react'; // Added Hourglass
 import {
   Alert,
   AlertDescription,
@@ -21,8 +21,6 @@ export default function DashboardPage() {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    // Ensure this runs client-side only and re-fetches on navigation (e.g., after logging)
-    // This could be further optimized with a global state or context if updates need to be more real-time across components.
     const fetchStats = () => {
       if (typeof window !== 'undefined') {
         const currentStats = getAggregatedStats();
@@ -33,20 +31,23 @@ export default function DashboardPage() {
     
     fetchStats();
 
-    // Optional: Add a listener for custom events if you want to refresh stats without a full page reload
-    // window.addEventListener('statsUpdated', fetchStats);
-    // return () => window.removeEventListener('statsUpdated', fetchStats);
+    // Listen for custom event to refresh stats
+    const handleStatsUpdated = () => fetchStats();
+    window.addEventListener('statsUpdated', handleStatsUpdated);
+    return () => window.removeEventListener('statsUpdated', handleStatsUpdated);
 
-  }, []); // Re-run when the component mounts or if a dependency changes that indicates stats might be stale.
-          // For simplicity, keeping it to mount. If navigating to/from log page, this will re-run.
+  }, []);
 
 
   const summaryData = stats ? [
-    { title: "Total Boundaries Explored", value: String(stats.totalDefined), icon: Target, description: "Number of boundaries you've explored with the AI assistant." },
-    { title: "Successful Implementations", value: String(stats.totalSuccessful), icon: CheckCircle, description: "Boundaries you've logged as successfully applied." },
-    { title: "Challenging Situations Logged", value: String(stats.totalChallenged), icon: ShieldAlert, description: "Instances where upholding a boundary was logged as difficult." },
-    { title: "Overall Success Rate", value: `${stats.overallProgress}%`, icon: TrendingUp, description: "Reflects success rate based on your logged attempts." },
+    { title: "Total Boundaries Defined", value: String(stats.totalDefined), icon: Target, description: "Unique boundary situations explored with the AI." },
+    { title: "Successful Implementations", value: String(stats.totalSuccessful), icon: CheckCircle, description: "Specific boundaries logged as successfully applied." },
+    { title: "Challenging Situations", value: String(stats.totalChallenged), icon: ShieldAlert, description: "Specific boundaries logged as difficult to uphold." },
+    { title: "Pending Logs", value: String(stats.totalPending), icon: Hourglass, description: "Boundaries defined but outcome not yet logged." },
   ] : [];
+  
+  const overallProgressCard = stats ? { title: "Overall Success Rate", value: `${stats.overallProgress}%`, icon: TrendingUp, description: "Success rate of logged attempts (Successful / (Successful + Challenged))." } : null;
+
 
   if (isLoadingStats) {
     return (
@@ -73,7 +74,7 @@ export default function DashboardPage() {
           <ShieldCheck className="h-5 w-5 text-primary" />
           <AlertTitle className="font-headline text-primary">Namaste! Welcome Back!</AlertTitle>
           <AlertDescription className="text-primary-foreground/80">
-            Track your journey in setting healthy boundaries. Your dashboard now reflects your logged experiences. Tapai ko pragati ko lagi शुभकामना!
+            Track your journey in setting healthy boundaries. Your dashboard reflects your interactions and logged experiences. Tapai ko pragati ko lagi शुभकामना!
           </AlertDescription>
         </Alert>
 
@@ -88,6 +89,20 @@ export default function DashboardPage() {
             />
           ))}
         </div>
+        
+        {overallProgressCard && (
+          <div className="grid md:grid-cols-1 lg:grid-cols-4"> {/* Adjust grid for a single prominent card or integrate differently */}
+            <div className="lg:col-span-1"> {/* Example: Make it take less space or more, as desired */}
+               <SummaryCard 
+                  title={overallProgressCard.title} 
+                  value={overallProgressCard.value} 
+                  icon={overallProgressCard.icon}
+                  description={overallProgressCard.description}
+                />
+            </div>
+          </div>
+        )}
+
 
         <div>
           {stats && <ProgressChart currentStats={stats} />}
@@ -99,10 +114,10 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="list-disc list-inside space-y-2 text-foreground">
-              <li><strong>Explore New Boundaries:</strong> Use the <Link href="/assistant" className="text-primary hover:underline">AI Assistant</Link> to get advice on areas you'd like to improve.</li>
-              <li><strong>Log Your Experiences:</strong> After trying to set a boundary, visit the <Link href="/log-experience" className="text-primary hover:underline">Log Experience page</Link> to record the outcome.</li>
-              <li><strong>Reflect on Patterns:</strong> Observe which boundary types are more successful or challenging for you via the chart.</li>
-              <li><strong>Iterate:</strong> If a boundary is challenging, try getting new advice from the AI or refining your approach.</li>
+              <li><strong>Explore New Boundaries:</strong> Use the <Link href="/assistant" className="text-primary hover:underline">AI Assistant</Link> to get advice on areas you'd like to improve. Each new piece of advice is a 'defined' boundary.</li>
+              <li><strong>Log Your Experiences:</strong> After trying to set a specific boundary, visit the <Link href="/log-experience" className="text-primary hover:underline">Log Experience page</Link> to record the outcome (successful or challenging).</li>
+              <li><strong>Reflect on Patterns:</strong> Observe which boundary types and specific situations are more successful or challenging for you via the chart and summary cards.</li>
+              <li><strong>Iterate:</strong> If a boundary is challenging, try getting new advice from the AI or refining your approach, then log the new attempt.</li>
             </ul>
             <div className="mt-6 flex flex-wrap gap-4">
               <Button asChild>
