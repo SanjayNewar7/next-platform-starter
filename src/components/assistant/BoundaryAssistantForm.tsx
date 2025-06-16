@@ -17,12 +17,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Sparkles, Send, CheckCircle, AlertTriangle, ThumbsUp, Frown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Loader2, Sparkles, Send } from "lucide-react";
+import { useState } from "react";
 import { getBoundaryRecommendation, type BoundaryRecommendationInput, type BoundaryRecommendationOutput } from '@/ai/flows/boundary-recommendation';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { incrementStat, allBoundaryTypes, type BoundaryTypeName } from '@/lib/userData';
+import Link from "next/link";
 
 const formSchema = z.object({
   boundaryType: z.enum(allBoundaryTypes, {
@@ -37,7 +38,9 @@ export default function BoundaryAssistantForm() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<BoundaryRecommendationOutput | null>(null);
-  const [currentBoundaryType, setCurrentBoundaryType] = useState<BoundaryTypeName | null>(null);
+  // currentBoundaryType is no longer needed here as logging is moved
+  // const [currentBoundaryType, setCurrentBoundaryType] = useState<BoundaryTypeName | null>(null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,7 +54,7 @@ export default function BoundaryAssistantForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     setRecommendation(null);
-    setCurrentBoundaryType(values.boundaryType); // Store for logging success/challenge
+    // setCurrentBoundaryType(values.boundaryType); // No longer needed here
     try {
       const input: BoundaryRecommendationInput = {
         boundaryType: values.boundaryType,
@@ -61,11 +64,20 @@ export default function BoundaryAssistantForm() {
       };
       const result = await getBoundaryRecommendation(input);
       setRecommendation(result);
-      incrementStat(values.boundaryType, 'defined');
+      incrementStat(values.boundaryType, 'defined'); // Still log 'defined' when a recommendation is fetched
       toast({
         title: "Recommendation Generated",
-        description: "AI has provided a boundary strategy. You can log your experience below.",
-        variant: "default", 
+        description: (
+          <span>
+            AI has provided a boundary strategy. You can log your real-world experience on the{' '}
+            <Button variant="link" asChild className="p-0 h-auto text-primary">
+              <Link href="/log-experience">Log Experience page</Link>
+            </Button>
+            .
+          </span>
+        ),
+        variant: "default",
+        duration: 10000, // Give user more time to see the link
       });
     } catch (e: any) {
       console.error("Error getting recommendation:", e);
@@ -79,28 +91,7 @@ export default function BoundaryAssistantForm() {
     }
   }
 
-  const handleLogSuccess = () => {
-    if (currentBoundaryType) {
-      incrementStat(currentBoundaryType, 'successful');
-      toast({
-        title: "Success Logged!",
-        description: `Great job implementing your ${currentBoundaryType} boundary.`,
-        variant: "default",
-      });
-    }
-  };
-
-  const handleLogChallenge = () => {
-    if (currentBoundaryType) {
-      incrementStat(currentBoundaryType, 'challenged');
-      toast({
-        title: "Challenge Logged",
-        description: `Noted a challenge with your ${currentBoundaryType} boundary. Keep trying!`,
-        variant: "default", 
-      });
-    }
-  };
-
+  // handleLogSuccess and handleLogChallenge are removed as this functionality is now on a separate page.
 
   return (
     <div className="space-y-6">
@@ -110,7 +101,7 @@ export default function BoundaryAssistantForm() {
             <Sparkles className="h-7 w-7 text-primary" /> AI Boundary Assistant
           </CardTitle>
           <CardDescription>
-            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context.
+            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context. Each recommendation you get is counted as a 'defined' boundary on your dashboard.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -229,17 +220,14 @@ export default function BoundaryAssistantForm() {
                 </Alert>
               </div>
             )}
-            <div className="border-t pt-4 mt-4 space-y-3">
-              <h4 className="font-semibold text-foreground mb-2">Log Your Experience:</h4>
-              <p className="text-sm text-muted-foreground">Did you try implementing this type of boundary?</p>
-              <div className="flex gap-4">
-                <Button onClick={handleLogSuccess} variant="outline" className="border-green-500 hover:bg-green-500/10 text-green-600 hover:text-green-700">
-                  <ThumbsUp className="mr-2 h-4 w-4" /> It was Successful!
-                </Button>
-                <Button onClick={handleLogChallenge} variant="outline" className="border-orange-500 hover:bg-orange-500/10 text-orange-600 hover:text-orange-700">
-                  <Frown className="mr-2 h-4 w-4" /> Faced a Challenge
-                </Button>
-              </div>
+            <div className="border-t pt-4 mt-4">
+                <p className="text-sm text-muted-foreground">
+                  Remember to visit the{' '}
+                  <Button variant="link" asChild className="p-0 h-auto text-primary -ml-1">
+                     <Link href="/log-experience">Log Experience page</Link>
+                  </Button>
+                  {' '}to record how implementing this type of boundary went for you.
+                </p>
             </div>
           </CardContent>
         </Card>

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import AppLayout from '@/components/AppLayout';
 import ProgressChart from '@/components/dashboard/ProgressChart';
 import SummaryCard from '@/components/dashboard/SummaryCard';
-import { Target, CheckCircle, ShieldAlert, TrendingUp, ShieldCheck, Info, HelpCircle } from 'lucide-react';
+import { Target, CheckCircle, ShieldAlert, TrendingUp, ShieldCheck, Info, Edit3 } from 'lucide-react';
 import {
   Alert,
   AlertDescription,
@@ -14,26 +14,38 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
-import { getAggregatedStats, type AggregatedStats } from '@/lib/userData'; // Import new utilities
+import { getAggregatedStats, type AggregatedStats } from '@/lib/userData'; 
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<AggregatedStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    // Ensure this runs client-side only
-    if (typeof window !== 'undefined') {
-      const currentStats = getAggregatedStats();
-      setStats(currentStats);
-      setIsLoadingStats(false);
-    }
-  }, []);
+    // Ensure this runs client-side only and re-fetches on navigation (e.g., after logging)
+    // This could be further optimized with a global state or context if updates need to be more real-time across components.
+    const fetchStats = () => {
+      if (typeof window !== 'undefined') {
+        const currentStats = getAggregatedStats();
+        setStats(currentStats);
+        setIsLoadingStats(false);
+      }
+    };
+    
+    fetchStats();
+
+    // Optional: Add a listener for custom events if you want to refresh stats without a full page reload
+    // window.addEventListener('statsUpdated', fetchStats);
+    // return () => window.removeEventListener('statsUpdated', fetchStats);
+
+  }, []); // Re-run when the component mounts or if a dependency changes that indicates stats might be stale.
+          // For simplicity, keeping it to mount. If navigating to/from log page, this will re-run.
+
 
   const summaryData = stats ? [
-    { title: "Total Boundaries Defined", value: String(stats.totalDefined), icon: Target, description: "Number of boundaries you've explored with the AI assistant." },
-    { title: "Successful Implementations", value: String(stats.totalSuccessful), icon: CheckCircle, description: "Boundaries you've marked as successfully applied." },
-    { title: "Challenging Situations", value: String(stats.totalChallenged), icon: ShieldAlert, description: "Instances where upholding a boundary was logged as difficult." },
-    { title: "Overall Progress", value: `${stats.overallProgress}%`, icon: TrendingUp, description: "Reflects success rate based on logged attempts." },
+    { title: "Total Boundaries Explored", value: String(stats.totalDefined), icon: Target, description: "Number of boundaries you've explored with the AI assistant." },
+    { title: "Successful Implementations", value: String(stats.totalSuccessful), icon: CheckCircle, description: "Boundaries you've logged as successfully applied." },
+    { title: "Challenging Situations Logged", value: String(stats.totalChallenged), icon: ShieldAlert, description: "Instances where upholding a boundary was logged as difficult." },
+    { title: "Overall Success Rate", value: `${stats.overallProgress}%`, icon: TrendingUp, description: "Reflects success rate based on your logged attempts." },
   ] : [];
 
   if (isLoadingStats) {
@@ -87,14 +99,21 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="list-disc list-inside space-y-2 text-foreground">
-              <li><strong>Define New Boundaries:</strong> Use the AI Assistant to get advice on areas you'd like to improve.</li>
-              <li><strong>Log Your Experiences:</strong> After trying to set a boundary, use the "Mark as Successful" or "Faced a Challenge" buttons on the Assistant page.</li>
-              <li><strong>Reflect on Patterns:</strong> Observe which boundary types are more successful or challenging for you via the chart below.</li>
+              <li><strong>Explore New Boundaries:</strong> Use the <Link href="/assistant" className="text-primary hover:underline">AI Assistant</Link> to get advice on areas you'd like to improve.</li>
+              <li><strong>Log Your Experiences:</strong> After trying to set a boundary, visit the <Link href="/log-experience" className="text-primary hover:underline">Log Experience page</Link> to record the outcome.</li>
+              <li><strong>Reflect on Patterns:</strong> Observe which boundary types are more successful or challenging for you via the chart.</li>
               <li><strong>Iterate:</strong> If a boundary is challenging, try getting new advice from the AI or refining your approach.</li>
             </ul>
-            <Button className="mt-6" asChild>
-              <Link href="/assistant">Get AI Boundary Advice</Link>
-            </Button>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Button asChild>
+                <Link href="/assistant">Get AI Boundary Advice</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/log-experience" className="flex items-center gap-2">
+                  <Edit3 className="h-4 w-4" /> Log an Experience
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

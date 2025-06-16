@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Shield, LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles } from 'lucide-react';
+import { Shield, LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles, Edit3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth, User } from '@/components/auth-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -30,17 +30,25 @@ export default function Header() {
           <Shield className="h-7 w-7" />
           <span className="font-headline">BoundaryWise</span>
         </Link>
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-2 md:gap-4">
           {user && (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" asChild className="text-xs sm:text-sm px-2 sm:px-3">
                 <Link href="/dashboard" className="flex items-center gap-1">
-                  <LayoutDashboard className="h-4 w-4" /> Dashboard
+                  <LayoutDashboard className="h-4 w-4" /> 
+                  <span className="hidden sm:inline">Dashboard</span>
                 </Link>
               </Button>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" asChild className="text-xs sm:text-sm px-2 sm:px-3">
                 <Link href="/assistant" className="flex items-center gap-1">
-                  <Sparkles className="h-4 w-4" /> Assistant
+                  <Sparkles className="h-4 w-4" /> 
+                  <span className="hidden sm:inline">Assistant</span>
+                </Link>
+              </Button>
+              <Button variant="ghost" asChild className="text-xs sm:text-sm px-2 sm:px-3">
+                <Link href="/log-experience" className="flex items-center gap-1">
+                  <Edit3 className="h-4 w-4" /> 
+                  <span className="hidden sm:inline">Log Experience</span>
                 </Link>
               </Button>
             </>
