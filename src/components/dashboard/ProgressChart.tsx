@@ -16,7 +16,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-// Mock data
+// Mock data - this data is illustrative.
 const chartData = [
   { month: "Jan", boundaryStrength: 30, boundariesSet: 5 },
   { month: "Feb", boundaryStrength: 45, boundariesSet: 8 },
@@ -28,11 +28,11 @@ const chartData = [
 
 const chartConfig = {
   boundaryStrength: {
-    label: "Boundary Strength",
+    label: "Boundary Strength (Illustrative)",
     color: "hsl(var(--chart-1))",
   },
   boundariesSet: {
-    label: "Boundaries Set",
+    label: "Boundaries Set (Illustrative)",
     color: "hsl(var(--chart-2))",
   }
 } satisfies Record<string, { label: string; color: string }>;
@@ -46,7 +46,7 @@ export default function ProgressChart() {
           <TrendingUp className="h-6 w-6 text-primary" />
           Boundary Progression
         </CardTitle>
-        <CardDescription>Your boundary strength and activity over the past 6 months.</CardDescription>
+        <CardDescription>Illustrative view of your boundary strength and activity over 6 months. This will update with your interactions.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
@@ -81,7 +81,7 @@ export default function ProgressChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="text-muted-foreground">
-          Keep up the great work! Consistent effort leads to stronger boundaries.
+          Keep using the AI Assistant to define boundaries. Consistent effort helps build stronger boundaries.
         </div>
       </CardFooter>
     </Card>
