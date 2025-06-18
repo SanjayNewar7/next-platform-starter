@@ -22,7 +22,7 @@ import { useState } from "react";
 import { getBoundaryRecommendation, type BoundaryRecommendationOutput } from '@/ai/flows/boundary-recommendation';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { addBoundary, allBoundaryTypes, type BoundaryTypeName } from '@/lib/userData'; // Updated import
+import { addBoundary, allBoundaryTypes } from '@/lib/userData'; 
 import Link from "next/link";
 
 const formSchema = z.object({
@@ -53,7 +53,7 @@ export default function BoundaryAssistantForm() {
     setLoading(true);
     setRecommendation(null);
     try {
-      const aiInput = { // Renamed to avoid conflict with Genkit's 'input'
+      const aiInput = { 
         boundaryType: values.boundaryType,
         situation: values.situation,
         desiredOutcome: values.desiredOutcome,
@@ -62,18 +62,19 @@ export default function BoundaryAssistantForm() {
       const result = await getBoundaryRecommendation(aiInput);
       setRecommendation(result);
       
-      // Save the defined boundary
       addBoundary({
         boundaryType: values.boundaryType,
-        situation: values.situation, // Save the user's situation
-        recommendation: result.recommendation, // Save AI's primary recommendation
+        situation: values.situation, 
+        desiredOutcome: values.desiredOutcome, // Pass desiredOutcome
+        pastAttempts: values.pastAttempts || undefined, // Pass pastAttempts
+        recommendation: result.recommendation, 
       });
 
       toast({
         title: "Recommendation Generated & Saved",
         description: (
           <span>
-            AI has provided a boundary strategy. This has been saved. You can log your real-world experience on the{' '}
+            AI has provided a boundary strategy. This has been saved with a 'pending' status. You can log your real-world experience on the{' '}
             <Button variant="link" asChild className="p-0 h-auto text-primary">
               <Link href="/log-experience">Log Experience page</Link>
             </Button>
@@ -104,7 +105,7 @@ export default function BoundaryAssistantForm() {
             <Sparkles className="h-7 w-7 text-primary" /> AI Boundary Assistant
           </CardTitle>
           <CardDescription>
-            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context. Each recommendation you get is saved and counted on your dashboard.
+            Select the type of boundary, describe your situation, desired outcome, and any past attempts. Our AI will provide personalized boundary-setting strategies tailored for a Nepali context. Each recommendation you get is saved for you to log its outcome later.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -225,7 +226,7 @@ export default function BoundaryAssistantForm() {
             )}
             <div className="border-t pt-4 mt-4">
                 <p className="text-sm text-muted-foreground">
-                  This advice has been saved. When you're ready, visit the{' '}
+                  This advice has been saved with a 'pending' status. When you're ready, visit the{' '}
                   <Button variant="link" asChild className="p-0 h-auto text-primary -ml-1">
                      <Link href="/log-experience">Log Experience page</Link>
                   </Button>
@@ -238,3 +239,4 @@ export default function BoundaryAssistantForm() {
     </div>
   );
 }
+

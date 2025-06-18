@@ -73,7 +73,7 @@ export default function DashboardPage() {
         <Alert className="bg-secondary border-primary/50">
           <ShieldCheck className="h-5 w-5 text-primary" />
           <AlertTitle className="font-headline text-primary">Namaste! Welcome Back!</AlertTitle>
-          <AlertDescription className="text-primary-foreground/80">
+          <AlertDescription className="text-black">
             Track your journey in setting healthy boundaries. Your dashboard reflects your interactions and logged experiences. Tapai ko pragati ko lagi शुभकामना!
           </AlertDescription>
         </Alert>

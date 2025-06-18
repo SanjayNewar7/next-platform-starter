@@ -1,7 +1,7 @@
 
 'use client';
 
-const LOCAL_STORAGE_KEY = 'boundaryWiseUserData_v2'; // Updated key for new structure
+const LOCAL_STORAGE_KEY = 'boundaryWiseUserData_v2'; 
 
 export const allBoundaryTypes = [
   "Financial", 
@@ -18,12 +18,12 @@ export interface LoggedBoundary {
   id: string;
   boundaryType: BoundaryTypeName;
   situation: string;
+  desiredOutcome: string; // Added
+  pastAttempts?: string; // Added
   recommendation: string;
   status: BoundaryStatus;
-  createdAt: number; // Timestamp
-  loggedAt?: number; // Timestamp
-  // For simplicity, challengeDescription and successFeedback are not stored in localStorage for now
-  // but could be added here if needed for persistence beyond the session.
+  createdAt: number; 
+  loggedAt?: number; 
 }
 
 export interface UserData {
@@ -35,7 +35,7 @@ export interface AggregatedStats {
   totalSuccessful: number;
   totalChallenged: number;
   totalPending: number;
-  overallProgress: number; // Percentage of (successful / (successful + challenged))
+  overallProgress: number; 
   byType: Record<BoundaryTypeName, {
     defined: number;
     successful: number;
@@ -56,8 +56,13 @@ function getUserData(): UserData {
   if (data) {
     try {
       const parsedData = JSON.parse(data) as UserData;
-      // Basic validation: ensure 'boundaries' is an array
       if (Array.isArray(parsedData.boundaries)) {
+        // Ensure all boundaries have the new fields, provide defaults if missing
+        parsedData.boundaries = parsedData.boundaries.map(b => ({
+          ...b,
+          desiredOutcome: b.desiredOutcome || "Not specified", // Default for older entries
+          // pastAttempts can remain undefined if not present
+        }));
         return parsedData;
       }
       console.warn("LocalStorage data for boundaries is not an array. Resetting.");
@@ -77,21 +82,28 @@ function saveUserData(data: UserData): void {
     return;
   }
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+  // Dispatch a custom event so other components (like dashboard) can react to data changes
+  window.dispatchEvent(new CustomEvent('statsUpdated'));
 }
 
 export function addBoundary(details: {
   boundaryType: BoundaryTypeName;
   situation: string;
+  desiredOutcome: string;
+  pastAttempts?: string;
   recommendation: string;
 }): LoggedBoundary {
   if (typeof window === 'undefined') {
-    // This case should ideally be handled by the caller if client-side only logic
     throw new Error("addBoundary can only be called on the client.");
   }
   const userData = getUserData();
   const newBoundary: LoggedBoundary = {
-    ...details,
-    id: Date.now().toString() + Math.random().toString(36).substring(2, 9), // Simple unique ID
+    id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+    boundaryType: details.boundaryType,
+    situation: details.situation,
+    desiredOutcome: details.desiredOutcome,
+    pastAttempts: details.pastAttempts,
+    recommendation: details.recommendation,
     status: 'pending',
     createdAt: Date.now(),
   };
@@ -103,7 +115,6 @@ export function addBoundary(details: {
 export function logBoundaryOutcome(
   id: string,
   outcome: 'successful' | 'challenged'
-  // challengeDescription and successFeedback are handled by UI, not stored persistently here for now
 ): void {
   if (typeof window === 'undefined') return;
   const userData = getUserData();
@@ -117,12 +128,18 @@ export function logBoundaryOutcome(
   }
 }
 
+export function getBoundaryById(id: string): LoggedBoundary | undefined {
+  const userData = getUserData();
+  return userData.boundaries.find(b => b.id === id);
+}
+
 export function getBoundaries(filterType?: BoundaryTypeName): LoggedBoundary[] {
   const userData = getUserData();
+  let filteredBoundaries = userData.boundaries;
   if (filterType) {
-    return userData.boundaries.filter(b => b.boundaryType === filterType).sort((a, b) => b.createdAt - a.createdAt);
+    filteredBoundaries = filteredBoundaries.filter(b => b.boundaryType === filterType);
   }
-  return userData.boundaries.sort((a, b) => b.createdAt - a.createdAt);
+  return filteredBoundaries.sort((a, b) => b.createdAt - a.createdAt);
 }
 
 
@@ -141,17 +158,26 @@ export function getAggregatedStats(): AggregatedStats {
 
   userData.boundaries.forEach(boundary => {
     totalDefined++;
-    byTypeStats[boundary.boundaryType].defined++;
+    if (byTypeStats[boundary.boundaryType]) { // Ensure type exists
+        byTypeStats[boundary.boundaryType].defined++;
+    }
+
 
     if (boundary.status === 'successful') {
       totalSuccessful++;
-      byTypeStats[boundary.boundaryType].successful++;
+      if (byTypeStats[boundary.boundaryType]) {
+        byTypeStats[boundary.boundaryType].successful++;
+      }
     } else if (boundary.status === 'challenged') {
       totalChallenged++;
-      byTypeStats[boundary.boundaryType].challenged++;
+      if (byTypeStats[boundary.boundaryType]) {
+        byTypeStats[boundary.boundaryType].challenged++;
+      }
     } else {
       totalPending++;
-      byTypeStats[boundary.boundaryType].pending++;
+      if (byTypeStats[boundary.boundaryType]) {
+        byTypeStats[boundary.boundaryType].pending++;
+      }
     }
   });
 
@@ -172,7 +198,6 @@ export function getAggregatedStats(): AggregatedStats {
   };
 }
 
-// Initialize data on first load if needed and if on client
 if (typeof window !== 'undefined' && !localStorage.getItem(LOCAL_STORAGE_KEY)) {
   saveUserData(getInitialData());
 }

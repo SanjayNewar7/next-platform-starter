@@ -6,10 +6,11 @@ export default function Footer() {
         <div className="mb-4">
           <h4 className="font-semibold text-foreground">About the Creator</h4>
           <p className="mt-1 text-xs max-w-xl mx-auto">
-            BoundaryWise is a project by Sanjaya Rajbhandari, a final-year BCA student and passionate Graphics Designer. 
-            This app blends his creative vision for intuitive user experiences with his growing technical expertise, 
-            aiming to empower individuals in their journey towards healthier personal boundaries.
-          </p>
+  BoundaryWise is a side project I’ve been working on as a BCA student and Graphics Designer. Through this app, I aim to help individuals better understand and maintain healthy personal boundaries with thoughtful, user-focused design.
+  <br />
+  – Sanjaya Rajbhandari
+</p>
+
         </div>
         <div className="border-t border-border/50 pt-4">
             <p>&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
