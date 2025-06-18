@@ -10,7 +10,7 @@ export const allBoundaryTypes = [
   "Work-Life Balance", 
   "Personal Time & Space",
   "Fitness & Health",
-  "Business" 
+  "Business & Entrepreneurship" 
 ] as const;
 
 export type BoundaryTypeName = typeof allBoundaryTypes[number];
