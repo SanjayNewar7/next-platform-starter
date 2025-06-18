@@ -19,11 +19,11 @@ export default function Footer() {
               Explore resources, get support, and start your journey to healthier boundaries today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Button size="lg" variant="outline" className="bg-white text-blue-600 hover:bg-blue-50">
-                Explore Resources
+              <Button size="lg" variant="outline" className="bg-white text-blue-600 hover:bg-blue-50" asChild>
+                <Link href="/help-center">Explore Resources</Link>
               </Button>
-              <Button size="lg" variant="ghost" className="text-white hover:bg-blue-700/50 border border-white/50 hover:border-white/80">
-                Join Community
+              <Button size="lg" variant="ghost" className="text-white hover:bg-blue-700/50 border border-white/50 hover:border-white/80" asChild>
+                <Link href="/community-forum">Join Community</Link>
               </Button>
             </div>
           </div>
@@ -55,18 +55,18 @@ export default function Footer() {
           <div>
             <h5 className="font-semibold text-foreground mb-4">Support</h5>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Help Center</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Contact Support</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Community Forum</Link></li>
+              <li><Link href="/help-center" className="text-muted-foreground hover:text-primary">Help Center</Link></li>
+              <li><Link href="/contact-support" className="text-muted-foreground hover:text-primary">Contact Support</Link></li>
+              <li><Link href="/community-forum" className="text-muted-foreground hover:text-primary">Community Forum</Link></li>
             </ul>
           </div>
           <div>
             <h5 className="font-semibold text-foreground mb-4">Resources</h5>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Articles</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Guides</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary">Events</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Blog (Coming Soon)</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Articles (Coming Soon)</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Guides (Coming Soon)</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Events (Coming Soon)</Link></li>
             </ul>
           </div>
           <div>
@@ -110,10 +110,10 @@ export default function Footer() {
             <Link href="#" className="hover:text-primary">Cookie Policy</Link>
           </div>
           <div className="flex gap-4">
-            <Link href="#" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></Link>
-            <Link href="#" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></Link>
-            <Link href="#" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></Link>
-            <Link href="#" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></Link>
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
+            <a href="https://www.instagram.com/sanjay_newar7/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></a>
+            <a href="https://www.linkedin.com/in/sanjaya-rajbhandari-089a31296/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></a>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
           </div>
         </div>
         <div className="text-center text-xs text-muted-foreground mt-8 pt-4 border-t border-border/30">
