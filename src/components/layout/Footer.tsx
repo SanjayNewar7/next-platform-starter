@@ -1,11 +1,26 @@
 
+"use client";
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Facebook, Instagram, Linkedin, Youtube, Shield } from 'lucide-react';
 import Image from 'next/image';
+import { useToast } from "@/hooks/use-toast";
 
 export default function Footer() {
+  const { toast } = useToast();
+
+  const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // const email = (event.target as any).elements.email.value; // If you need the email value
+    toast({
+      title: "Subscription Received!",
+      description: "Thank you for subscribing to BoundaryWise updates and news.",
+    });
+    (event.target as HTMLFormElement).reset();
+  };
+
   return (
     <footer className="bg-background border-t border-border/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -34,7 +49,7 @@ export default function Footer() {
               width={300}
               height={250}
               className="rounded-lg object-cover"
-              data-ai-hint="community support"
+              data-ai-hint="community connect"
             />
              <Shield className="absolute text-white/20 h-48 w-48 -bottom-12 -right-12 transform rotate-12 opacity-30" />
           </div>
@@ -72,24 +87,16 @@ export default function Footer() {
           <div>
             <h5 className="font-semibold text-foreground mb-4">Subscribe</h5>
             <p className="text-muted-foreground mb-3">Join our community to receive updates and tips.</p>
-            <form className="flex flex-col gap-3">
-              <Input type="email" placeholder="Enter your email" className="bg-muted/50 border-border/50" />
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
+              <Input type="email" name="email" placeholder="Enter your email" className="bg-muted/50 border-border/50" />
               <Button type="submit" className="w-full">Subscribe</Button>
             </form>
             <p className="text-xs text-muted-foreground mt-2">By subscribing, you agree to our Privacy Policy.</p>
           </div>
         </div>
 
-        {/* About the Creator & Encouraging Message */}
+        {/* Encouraging Message */}
         <div className="text-center text-muted-foreground text-sm mb-12 space-y-4 py-8 border-y border-border/30">
-           <div>
-            <h4 className="font-semibold text-foreground mb-1">A Message from the Creator</h4>
-            <p className="mt-1 text-xs max-w-xl mx-auto">
-              BoundaryWise is a side project I’ve been working on as a BCA student and Graphics Designer. Through this app, I aim to help individuals better understand and maintain healthy personal boundaries with thoughtful, user-focused design.
-              <br />
-              – Sanjaya Rajbhandari
-            </p>
-          </div>
           <div>
             <p className="max-w-2xl mx-auto leading-relaxed">
               Setting healthy boundaries is a journey of self-discovery and empowerment. Be kind to yourself, celebrate every step, and remember BoundaryWise is here to support you. You&apos;re not alone in this.
@@ -105,15 +112,15 @@ export default function Footer() {
             <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
           </div>
           <div className="flex gap-4 items-center order-first md:order-none mb-4 md:mb-0">
-            <Link href="#" className="hover:text-primary">Privacy Policy</Link>
-            <Link href="#" className="hover:text-primary">Terms of Service</Link>
-            <Link href="#" className="hover:text-primary">Cookie Policy</Link>
+            <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-primary">Terms of Service</Link>
+            <Link href="/cookie-policy" className="hover:text-primary">Cookie Policy</Link>
           </div>
           <div className="flex gap-4">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
+            <a href="https://www.facebook.com/sanjay.rajbhandari.2025" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
             <a href="https://www.instagram.com/sanjay_newar7/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></a>
             <a href="https://www.linkedin.com/in/sanjaya-rajbhandari-089a31296/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></a>
-            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
+            <a href="https://www.youtube.com/@SanjayaRajbhandari" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
           </div>
         </div>
         <div className="text-center text-xs text-muted-foreground mt-8 pt-4 border-t border-border/30">
