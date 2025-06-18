@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { type LoggedBoundary } from '@/lib/userData';
 import { getBoundaryRecommendation, type BoundaryRecommendationOutput, type BoundaryRecommendationInput } from '@/ai/flows/boundary-recommendation';
 import { format } from 'date-fns';
+import { cn } from "@/lib/utils";
 
 interface BoundaryDisplayCardProps {
   boundary: LoggedBoundary;
@@ -23,6 +24,11 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
   const [challengeDescription, setChallengeDescription] = useState("");
   const [isGeneratingFollowUp, setIsGeneratingFollowUp] = useState(false);
   const [followUpRecommendation, setFollowUpRecommendation] = useState<BoundaryRecommendationOutput | null>(null);
+  const [isSituationExpanded, setIsSituationExpanded] = useState(false);
+
+  const toggleSituationExpansion = () => {
+    setIsSituationExpanded(!isSituationExpanded);
+  };
 
   const handleGetFollowUpAdvice = async () => {
     if (!challengeDescription.trim()) {
@@ -68,9 +74,9 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
   const getStatusBadgeVariant = (status: LoggedBoundary['status']) => {
     switch (status) {
       case 'successful':
-        return 'default'; // Or a custom green variant
+        return 'default'; 
       case 'challenged':
-        return 'destructive'; // Or a custom orange/yellow variant
+        return 'destructive'; 
       case 'pending':
       default:
         return 'secondary';
@@ -93,10 +99,17 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
     <Card className="shadow-md w-full">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <CardTitle className="font-headline text-lg mb-1 leading-tight">
+          <CardTitle 
+            className={cn(
+              "font-headline text-lg mb-1 leading-tight flex-1 mr-2", // Added flex-1 and mr-2 for better layout with badge
+              !isSituationExpanded ? "line-clamp-2 cursor-pointer hover:text-primary" : "cursor-pointer"
+            )}
+            onClick={toggleSituationExpansion}
+            title={isSituationExpanded ? "Show less" : "Show more"}
+          >
             {boundary.situation}
           </CardTitle>
-          <Badge variant={getStatusBadgeVariant(boundary.status)} className={cn("ml-2 whitespace-nowrap", getStatusBadgeClasses(boundary.status))}>
+          <Badge variant={getStatusBadgeVariant(boundary.status)} className={cn("ml-auto whitespace-nowrap self-start", getStatusBadgeClasses(boundary.status))}>
             {boundary.status.charAt(0).toUpperCase() + boundary.status.slice(1)}
           </Badge>
         </div>
@@ -122,12 +135,16 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
           <h4 className="text-sm font-semibold text-foreground mb-1">AI's Original Recommendation:</h4>
           <p className="text-sm text-foreground/80 bg-muted/50 p-3 rounded-md whitespace-pre-line">{boundary.recommendation}</p>
         </div>
-        {boundary.desiredOutcome && (
-            <div>
-            <h4 className="text-sm font-semibold text-foreground mb-1">Your Desired Outcome:</h4>
+        
+        <div>
+          <h4 className="text-sm font-semibold text-foreground mb-1">Your Desired Outcome:</h4>
+          {boundary.desiredOutcome ? (
             <p className="text-sm text-foreground/80 bg-muted/30 p-3 rounded-md">{boundary.desiredOutcome}</p>
-            </div>
-        )}
+          ) : (
+            <p className="text-sm text-muted-foreground/60 bg-muted/30 p-3 rounded-md italic">Not specified or not applicable.</p>
+          )}
+        </div>
+
         {boundary.pastAttempts && (
             <div>
             <h4 className="text-sm font-semibold text-foreground mb-1">Past Attempts (if any):</h4>
@@ -202,7 +219,7 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
   );
 }
 
-// Helper function to apply cn directly for badge variant styling
-function cn(...inputs: any[]): string {
-  return inputs.filter(Boolean).join(' ');
-}
+// Helper function to apply cn directly for badge variant styling (already present)
+// function cn(...inputs: any[]): string {
+//   return inputs.filter(Boolean).join(' ');
+// }
