@@ -13,7 +13,6 @@ export default function Footer() {
 
   const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const email = (event.target as any).elements.email.value; // If you need the email value
     toast({
       title: "Subscription Received!",
       description: "Thank you for subscribing to BoundaryWise updates and news.",
@@ -104,27 +103,31 @@ export default function Footer() {
           </div>
         </div>
 
-
         {/* Bottom Bar Section */}
-        <div className="text-center text-xs text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <div className="flex items-center gap-2 mb-4 md:mb-0"> {/* Logo */}
               <Shield className="h-6 w-6 text-primary" />
               <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
             </div>
-            <div className="flex gap-4 items-center order-first md:order-none mb-4 md:mb-0">
-              <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
-              <Link href="/terms-of-service" className="hover:text-primary">Terms of Service</Link>
-              <Link href="/cookie-policy" className="hover:text-primary">Cookie Policy</Link>
+            
+            {/* Policy Links and Copyright - Centered Block */}
+            <div className="flex flex-col items-center text-center gap-1 order-first md:order-none mb-4 md:mb-0">
+              <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 items-center">
+                <Link href="/privacy-policy" className="hover:text-primary whitespace-nowrap">Privacy Policy</Link>
+                <Link href="/terms-of-service" className="hover:text-primary whitespace-nowrap">Terms of Service</Link>
+                <Link href="/cookie-policy" className="hover:text-primary whitespace-nowrap">Cookie Policy</Link>
+              </div>
+              <p className="mt-1">&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
             </div>
-            <div className="flex gap-4">
+
+            <div className="flex gap-4"> {/* Social Icons */}
               <a href="https://www.facebook.com/sanjay.rajbhandari.2025" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
               <a href="https://www.instagram.com/sanjay_newar7/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></a>
               <a href="https://www.linkedin.com/in/sanjaya-rajbhandari-089a31296/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></a>
               <a href="https://www.youtube.com/@SanjayaRajbhandari" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
             </div>
           </div>
-          <p className="mt-6">&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
         </div>
       </div>
     </footer>
