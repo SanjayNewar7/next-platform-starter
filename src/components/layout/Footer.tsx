@@ -1,26 +1,123 @@
 
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Facebook, Instagram, Linkedin, Youtube, Shield } from 'lucide-react';
+import Image from 'next/image';
+
 export default function Footer() {
   return (
-    <footer className="bg-muted/50 border-t border-border py-8 mt-auto">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-foreground text-sm">
-        <div className="mb-6">
-          <h4 className="font-semibold text-foreground">About the Creator</h4>
-          <p className="mt-1 text-xs max-w-xl mx-auto">
-            BoundaryWise is a side project I’ve been working on as a BCA student and Graphics Designer. Through this app, I aim to help individuals better understand and maintain healthy personal boundaries with thoughtful, user-focused design.
-            <br />
-            – Sanjaya Rajbhandari
-          </p>
+    <footer className="bg-background border-t border-border/30">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Top Banner Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-8 md:p-12 rounded-xl shadow-lg mb-16 flex flex-col md:flex-row items-center text-white overflow-hidden">
+          <div className="md:w-2/3 space-y-6 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold">
+              Connect with BoundaryWise
+            </h2>
+            <p className="text-lg md:text-xl opacity-90">
+              Explore resources, get support, and start your journey to healthier boundaries today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Button size="lg" variant="outline" className="bg-white text-blue-600 hover:bg-blue-50">
+                Explore Resources
+              </Button>
+              <Button size="lg" variant="ghost" className="text-white hover:bg-blue-700/50 border border-white/50 hover:border-white/80">
+                Join Community
+              </Button>
+            </div>
+          </div>
+          <div className="md:w-1/3 mt-8 md:mt-0 flex justify-center md:justify-end relative">
+            <Image
+              src="https://placehold.co/300x250.png"
+              alt="Supportive community"
+              width={300}
+              height={250}
+              className="rounded-lg object-cover"
+              data-ai-hint="community support"
+            />
+             <Shield className="absolute text-white/20 h-48 w-48 -bottom-12 -right-12 transform rotate-12 opacity-30" />
+          </div>
         </div>
 
-        <div className="mb-6">
-          <p className="max-w-2xl mx-auto leading-relaxed">
-            Setting healthy boundaries is a journey of self-discovery and empowerment. Be kind to yourself, celebrate every step, and remember BoundaryWise is here to support you. You&apos;re not alone in this.
-          </p>
+        {/* Link Columns Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-sm">
+          <div>
+            <h5 className="font-semibold text-foreground mb-4">Useful Links</h5>
+            <ul className="space-y-2">
+              <li><Link href="/about" className="text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link href="/assistant" className="text-muted-foreground hover:text-primary">AI Assistant</Link></li>
+              <li><Link href="/dashboard" className="text-muted-foreground hover:text-primary">Dashboard</Link></li>
+              <li><Link href="/log-experience" className="text-muted-foreground hover:text-primary">Log Experience</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">FAQs</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold text-foreground mb-4">Support</h5>
+            <ul className="space-y-2">
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Help Center</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Contact Support</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Community Forum</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold text-foreground mb-4">Resources</h5>
+            <ul className="space-y-2">
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Articles</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Guides</Link></li>
+              <li><Link href="#" className="text-muted-foreground hover:text-primary">Events</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold text-foreground mb-4">Subscribe</h5>
+            <p className="text-muted-foreground mb-3">Join our community to receive updates and tips.</p>
+            <form className="flex flex-col gap-3">
+              <Input type="email" placeholder="Enter your email" className="bg-muted/50 border-border/50" />
+              <Button type="submit" className="w-full">Subscribe</Button>
+            </form>
+            <p className="text-xs text-muted-foreground mt-2">By subscribing, you agree to our Privacy Policy.</p>
+          </div>
         </div>
 
-        <div className="border-t border-border/50 pt-6">
-            <p>&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
-            <p className="mt-1">Empowering you to set healthy personal boundaries.</p>
+        {/* About the Creator & Encouraging Message */}
+        <div className="text-center text-muted-foreground text-sm mb-12 space-y-4 py-8 border-y border-border/30">
+           <div>
+            <h4 className="font-semibold text-foreground mb-1">A Message from the Creator</h4>
+            <p className="mt-1 text-xs max-w-xl mx-auto">
+              BoundaryWise is a side project I’ve been working on as a BCA student and Graphics Designer. Through this app, I aim to help individuals better understand and maintain healthy personal boundaries with thoughtful, user-focused design.
+              <br />
+              – Sanjaya Rajbhandari
+            </p>
+          </div>
+          <div>
+            <p className="max-w-2xl mx-auto leading-relaxed">
+              Setting healthy boundaries is a journey of self-discovery and empowerment. Be kind to yourself, celebrate every step, and remember BoundaryWise is here to support you. You&apos;re not alone in this.
+            </p>
+          </div>
+        </div>
+
+
+        {/* Bottom Bar Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <Shield className="h-6 w-6 text-primary" />
+            <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
+          </div>
+          <div className="flex gap-4 items-center order-first md:order-none mb-4 md:mb-0">
+            <Link href="#" className="hover:text-primary">Privacy Policy</Link>
+            <Link href="#" className="hover:text-primary">Terms of Service</Link>
+            <Link href="#" className="hover:text-primary">Cookie Policy</Link>
+          </div>
+          <div className="flex gap-4">
+            <Link href="#" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></Link>
+            <Link href="#" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></Link>
+            <Link href="#" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></Link>
+            <Link href="#" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></Link>
+          </div>
+        </div>
+        <div className="text-center text-xs text-muted-foreground mt-8 pt-4 border-t border-border/30">
+          <p>&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
         </div>
       </div>
     </footer>
