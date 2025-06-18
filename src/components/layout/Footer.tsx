@@ -120,13 +120,13 @@ export default function Footer() {
             </div>
             
             {/* Policy Links and Copyright - Centered Block */}
-            <div className="flex flex-col items-center text-center gap-1 order-first md:order-none mb-4 md:mb-0">
-              <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 items-center">
-                <Link href="/privacy-policy" className="hover:text-primary whitespace-nowrap">Privacy Policy</Link>
-                <Link href="/terms-of-service" className="hover:text-primary whitespace-nowrap">Terms of Service</Link>
-                <Link href="/cookie-policy" className="hover:text-primary whitespace-nowrap">Cookie Policy</Link>
-              </div>
-              <p className="mt-1">&copy; {new Date().getFullYear()} MeroSathi. All rights reserved.</p>
+             <div className="flex flex-col items-center text-center gap-1 order-first md:order-none mb-4 md:mb-0">
+                <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 items-center">
+                    <Link href="/privacy-policy" className="hover:text-primary whitespace-nowrap">Privacy Policy</Link>
+                    <Link href="/terms-of-service" className="hover:text-primary whitespace-nowrap">Terms of Service</Link>
+                    <Link href="/cookie-policy" className="hover:text-primary whitespace-nowrap">Cookie Policy</Link>
+                </div>
+                <p className="mt-1">&copy; {new Date().getFullYear()} MeroSathi. All rights reserved.</p>
             </div>
 
             <div className="flex gap-4"> {/* Social Icons */}
