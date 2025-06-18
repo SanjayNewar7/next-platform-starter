@@ -43,7 +43,7 @@ export default function Footer() {
           </div>
           <div className="md:w-1/3 mt-8 md:mt-0 flex justify-center md:justify-end relative">
             <Image
-              src="https://placehold.co/300x250.png"
+              src="/images/image1.png"
               alt="Supportive community"
               width={300}
               height={250}
