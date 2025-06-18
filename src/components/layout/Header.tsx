@@ -2,9 +2,9 @@
 "use client";
 
 import Link from 'next/link';
-import { Shield, LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles, Edit3, User as UserIcon } from 'lucide-react';
+import { LogIn, UserPlus, LogOut, LayoutDashboard, Sparkles, Edit3, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth, User } from '@/components/auth-provider';
+import { useAuth } from '@/components/auth-provider'; // Removed User import as it's not directly used here
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from 'next/image';
 
 export default function Header() {
   const { user, signOut, loading } = useAuth();
@@ -27,7 +28,7 @@ export default function Header() {
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
-          <Shield className="h-7 w-7" />
+          <Image src="/merosathi-logo.png" alt="MeroSathi Logo" width={32} height={32} />
           <span className="font-headline">MeroSathi</span>
         </Link>
         <nav className="flex items-center gap-2 md:gap-4">

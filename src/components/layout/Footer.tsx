@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Facebook, Instagram, Linkedin, Youtube, Shield } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
 
@@ -50,7 +50,15 @@ export default function Footer() {
               className="rounded-lg object-cover"
               data-ai-hint="community connect"
             />
-             <Shield className="absolute text-white/20 h-48 w-48 -bottom-12 -right-12 transform rotate-12 opacity-30" />
+             <div className="absolute text-white/20 h-48 w-48 -bottom-12 -right-12 transform rotate-12 opacity-30">
+                <Image 
+                    src="/merosathi-logo.png" 
+                    alt="MeroSathi Decorative Logo" 
+                    width={150} 
+                    height={150} 
+                    className="opacity-50"
+                />
+             </div>
           </div>
         </div>
 
@@ -107,7 +115,7 @@ export default function Footer() {
         <div className="text-xs text-muted-foreground">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0"> {/* Logo */}
-              <Shield className="h-6 w-6 text-primary" />
+              <Image src="/merosathi-logo.png" alt="MeroSathi Logo" width={28} height={28} />
               <span className="font-headline text-lg font-semibold text-foreground">MeroSathi</span>
             </div>
             

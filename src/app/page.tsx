@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, ShieldCheck, MessageSquareHeart, BarChart3 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
@@ -13,7 +14,14 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="py-28 md:py-44">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-8" />
+            <Image 
+              src="/merosathi-logo.png" 
+              alt="MeroSathi Logo" 
+              width={80} 
+              height={80} 
+              className="mx-auto mb-8"
+              priority 
+            />
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-foreground mb-8">
               Welcome to <span className="text-primary">MeroSathi</span>
             </h1>
