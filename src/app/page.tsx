@@ -21,6 +21,7 @@ export default function HomePage() {
             height={80} 
             className="mx-auto mb-8"
             priority 
+            data-ai-hint="logo abstract"
           />
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-foreground mb-8">
