@@ -22,7 +22,7 @@ const BoundaryTypes = [
   "Work-Life Balance", 
   "Personal Time & Space",
   "Fitness & Health",
-  "Business & Entrepreneurship"
+  "Business"
 ] as const;
 
 const BoundaryRecommendationInputSchema = z.object({
