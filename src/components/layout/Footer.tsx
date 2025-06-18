@@ -106,25 +106,25 @@ export default function Footer() {
 
 
         {/* Bottom Bar Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <Shield className="h-6 w-6 text-primary" />
-            <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
+        <div className="text-center text-xs text-muted-foreground">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-4 md:mb-0">
+              <Shield className="h-6 w-6 text-primary" />
+              <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
+            </div>
+            <div className="flex gap-4 items-center order-first md:order-none mb-4 md:mb-0">
+              <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="hover:text-primary">Terms of Service</Link>
+              <Link href="/cookie-policy" className="hover:text-primary">Cookie Policy</Link>
+            </div>
+            <div className="flex gap-4">
+              <a href="https://www.facebook.com/sanjay.rajbhandari.2025" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
+              <a href="https://www.instagram.com/sanjay_newar7/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></a>
+              <a href="https://www.linkedin.com/in/sanjaya-rajbhandari-089a31296/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></a>
+              <a href="https://www.youtube.com/@SanjayaRajbhandari" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
+            </div>
           </div>
-          <div className="flex gap-4 items-center order-first md:order-none mb-4 md:mb-0">
-            <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
-            <Link href="/terms-of-service" className="hover:text-primary">Terms of Service</Link>
-            <Link href="/cookie-policy" className="hover:text-primary">Cookie Policy</Link>
-          </div>
-          <div className="flex gap-4">
-            <a href="https://www.facebook.com/sanjay.rajbhandari.2025" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-primary"><Facebook size={20} /></a>
-            <a href="https://www.instagram.com/sanjay_newar7/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-primary"><Instagram size={20} /></a>
-            <a href="https://www.linkedin.com/in/sanjaya-rajbhandari-089a31296/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-primary"><Linkedin size={20} /></a>
-            <a href="https://www.youtube.com/@SanjayaRajbhandari" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-primary"><Youtube size={20} /></a>
-          </div>
-        </div>
-        <div className="text-center text-xs text-muted-foreground mt-8 pt-4 border-t border-border/30">
-          <p>&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
+          <p className="mt-6">&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
         </div>
       </div>
     </footer>
