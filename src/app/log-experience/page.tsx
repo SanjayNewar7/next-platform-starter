@@ -177,7 +177,7 @@ export default function LogExperiencePage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2 text-2xl">
-              <Edit3 className="h-7 w-7 text-primary" /> Log Your Boundary Experience
+              <Edit3 className="h-7 w-7 text-primary" /> Log My Experience
             </CardTitle>
             <CardDescription>
               Select a boundary you defined with the AI. Log if it was successful or challenging. If challenging, describe it and you can get new AI advice.

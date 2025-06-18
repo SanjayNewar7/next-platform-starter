@@ -209,7 +209,7 @@ export default function BoundaryDisplayCard({ boundary, enableFollowUp = false }
                 </div>
               )}
               <p className="text-xs text-muted-foreground pt-2">
-                  Remember to log your experience again if you try this new approach via the "Log Experience" page.
+                  Remember to log your experience again if you try this new approach via the "My Experience" page.
               </p>
             </div>
           )}

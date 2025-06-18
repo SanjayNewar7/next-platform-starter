@@ -75,7 +75,7 @@ export default function BoundariesListPage() {
                 <Inbox className="mx-auto h-12 w-12 text-muted-foreground" />
                 <p className="mt-4 text-lg font-medium text-muted-foreground">No boundaries found for this category.</p>
                 {status === 'all' && <p className="text-sm text-muted-foreground">Try using the <a href="/assistant" className="text-primary hover:underline">AI Assistant</a> to define some boundaries.</p>}
-                {status !== 'all' && <p className="text-sm text-muted-foreground">Log your experiences on the <a href="/log-experience" className="text-primary hover:underline">Log Experience page</a>.</p>}
+                {status !== 'all' && <p className="text-sm text-muted-foreground">Log your experiences on the <a href="/log-experience" className="text-primary hover:underline">My Experience page</a>.</p>}
               </div>
             ) : (
               <div className="space-y-4">

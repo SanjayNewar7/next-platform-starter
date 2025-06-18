@@ -57,6 +57,7 @@ export default function Footer() {
                     width={150} 
                     height={150} 
                     className="opacity-50"
+                    data-ai-hint="logo abstract"
                 />
              </div>
           </div>
@@ -70,7 +71,7 @@ export default function Footer() {
               <li><Link href="/about" className="text-muted-foreground hover:text-primary">About Us</Link></li>
               <li><Link href="/assistant" className="text-muted-foreground hover:text-primary">AI Assistant</Link></li>
               <li><Link href="/dashboard" className="text-muted-foreground hover:text-primary">Dashboard</Link></li>
-              <li><Link href="/log-experience" className="text-muted-foreground hover:text-primary">Log Experience</Link></li>
+              <li><Link href="/log-experience" className="text-muted-foreground hover:text-primary">My Experience</Link></li>
               <li><Link href="/faqs" className="text-muted-foreground hover:text-primary">FAQs</Link></li>
             </ul>
           </div>
@@ -115,7 +116,7 @@ export default function Footer() {
         <div className="text-xs text-muted-foreground">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0"> {/* Logo */}
-              <Image src="/images/merosathi_logo.png" alt="MeroSathi Logo" width={28} height={28} />
+              <Image src="/images/merosathi_logo.png" alt="MeroSathi Logo" width={28} height={28} data-ai-hint="logo abstract"/>
               <span className="font-headline text-lg font-semibold text-foreground">MeroSathi</span>
             </div>
             

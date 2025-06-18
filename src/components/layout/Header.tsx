@@ -28,7 +28,7 @@ export default function Header() {
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
-          <Image src="/images/merosathi_logo.png" alt="MeroSathi Logo" width={32} height={32} />
+          <Image src="/images/merosathi_logo.png" alt="MeroSathi Logo" width={32} height={32} data-ai-hint="logo abstract" />
           <span className="font-headline">MeroSathi</span>
         </Link>
         <nav className="flex items-center gap-2 md:gap-4">
@@ -49,7 +49,7 @@ export default function Header() {
               <Button variant="ghost" asChild className="text-xs sm:text-sm px-2 sm:px-3">
                 <Link href="/log-experience" className="flex items-center gap-1">
                   <Edit3 className="h-4 w-4" /> 
-                  <span className="hidden sm:inline">Log Experience</span>
+                  <span className="hidden sm:inline">My Experience</span>
                 </Link>
               </Button>
             </>

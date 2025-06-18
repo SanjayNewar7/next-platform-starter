@@ -76,7 +76,7 @@ export default function BoundaryAssistantForm() {
           <span>
             AI has provided a boundary strategy. This has been saved with a 'pending' status. You can log your real-world experience on the{' '}
             <Button variant="link" asChild className="p-0 h-auto text-primary">
-              <Link href="/log-experience">Log Experience page</Link>
+              <Link href="/log-experience">My Experience page</Link>
             </Button>
             .
           </span>
@@ -228,7 +228,7 @@ export default function BoundaryAssistantForm() {
                 <p className="text-sm text-muted-foreground">
                   This advice has been saved with a 'pending' status. When you're ready, visit the{' '}
                   <Button variant="link" asChild className="p-0 h-auto text-primary -ml-1">
-                     <Link href="/log-experience">Log Experience page</Link>
+                     <Link href="/log-experience">My Experience page</Link>
                   </Button>
                   {' '}to record how implementing this boundary went for you.
                 </p>
@@ -239,4 +239,3 @@ export default function BoundaryAssistantForm() {
     </div>
   );
 }
-

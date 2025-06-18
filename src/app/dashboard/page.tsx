@@ -115,7 +115,7 @@ export default function DashboardPage() {
           <CardContent>
             <ul className="list-disc list-inside space-y-2 text-foreground">
               <li><strong>Explore New Boundaries:</strong> Use the <Link href="/assistant" className="text-primary hover:underline">AI Assistant</Link> to get advice on areas you'd like to improve. Each new piece of advice is a 'defined' boundary.</li>
-              <li><strong>Log Your Experiences:</strong> After trying to set a specific boundary, visit the <Link href="/log-experience" className="text-primary hover:underline">Log Experience page</Link> to record the outcome (successful or challenging).</li>
+              <li><strong>Log Your Experiences:</strong> After trying to set a specific boundary, visit the <Link href="/log-experience" className="text-primary hover:underline">My Experience page</Link> to record the outcome (successful or challenging).</li>
               <li><strong>Review Specific Boundaries:</strong> Click on the summary cards above (e.g., "Challenging Situations") to see a detailed list of those boundaries.</li>
               <li><strong>Reflect on Patterns:</strong> Observe which boundary types and specific situations are more successful or challenging for you via the chart and summary cards.</li>
               <li><strong>Iterate:</strong> If a boundary is challenging, view it from the "Challenging Situations" list and get new AI advice to refine your approach.</li>
@@ -126,7 +126,7 @@ export default function DashboardPage() {
               </Button>
               <Button variant="outline" asChild>
                 <Link href="/log-experience" className="flex items-center gap-2">
-                  <Edit3 className="h-4 w-4" /> Log an Experience
+                  <Edit3 className="h-4 w-4" /> Log My Experience
                 </Link>
               </Button>
             </div>

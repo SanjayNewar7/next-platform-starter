@@ -24,11 +24,11 @@ const faqData = [
   },
   {
     question: "How do I log my experiences with setting boundaries?",
-    answer: "After defining a boundary with the AI Assistant, you can visit the 'Log Experience' page. There, you can select the specific boundary situation and record whether your attempt to implement it was 'successful' or 'challenged'."
+    answer: "After defining a boundary with the AI Assistant, you can visit the 'My Experience' page. There, you can select the specific boundary situation and record whether your attempt to implement it was 'successful' or 'challenged'."
   },
   {
     question: "What if the AI's initial advice doesn't work for me?",
-    answer: "If a boundary attempt is challenging, you can log this on the 'Log Experience' page or find the boundary in the 'Challenged Boundaries' list (accessible from the dashboard). For challenged boundaries, you can describe the specific difficulty and request new, refined AI advice tailored to overcome that challenge."
+    answer: "If a boundary attempt is challenging, you can log this on the 'My Experience' page or find the boundary in the 'Challenged Boundaries' list (accessible from the dashboard). For challenged boundaries, you can describe the specific difficulty and request new, refined AI advice tailored to overcome that challenge."
   },
   {
     question: "How is Nepali culture considered in the advice?",
