@@ -15,7 +15,7 @@ export default function HomePage() {
         <section className="py-28 md:py-44">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Image 
-            src="https://i.ibb.co/J3g4zT2/merosathi-logo.png" 
+            src="/images/merosathi_logo.png" 
             alt="MeroSathi Logo" 
             width={80} 
             height={80} 
