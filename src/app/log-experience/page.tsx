@@ -14,8 +14,9 @@ import { getBoundaryRecommendation, type BoundaryRecommendationOutput, type Boun
 import { ThumbsUp, Frown, Edit3, MessageSquareText, Sparkles, ListChecks, HelpCircle, Loader2, Send } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Link from 'next/link';
 
-export default function LogExperiencePage() {
+export default function MyExperiencePage() {
   const [selectedBoundaryType, setSelectedBoundaryType] = useState<BoundaryTypeName | "">("");
   const [availableBoundaries, setAvailableBoundaries] = useState<LoggedBoundary[]>([]);
   const [selectedBoundaryId, setSelectedBoundaryId] = useState<string>("");
@@ -177,7 +178,7 @@ export default function LogExperiencePage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2 text-2xl">
-              <Edit3 className="h-7 w-7 text-primary" /> Log My Experience
+              <Edit3 className="h-7 w-7 text-primary" /> My Experience
             </CardTitle>
             <CardDescription>
               Select a boundary you defined with the AI. Log if it was successful or challenging. If challenging, describe it and you can get new AI advice.
@@ -223,15 +224,7 @@ export default function LogExperiencePage() {
                        <ScrollArea className="h-auto max-h-60">
                         {availableBoundaries.map((boundary) => (
                           <SelectItem key={boundary.id} value={boundary.id}>
-                            <div className="flex flex-col text-left text-sm py-1">
-                                <span className="font-medium">{getTruncatedText(boundary.situation, 50)}</span>
-                                <span className="text-xs text-muted-foreground">
-                                  Defined: {new Date(boundary.createdAt).toLocaleDateString()}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                  AI Said: {getTruncatedText(boundary.recommendation, 40)}
-                                </span>
-                            </div>
+                            <span className="font-medium">{getTruncatedText(boundary.situation, 50)}</span>
                           </SelectItem>
                         ))}
                       </ScrollArea>
