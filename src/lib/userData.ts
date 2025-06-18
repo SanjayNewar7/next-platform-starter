@@ -18,8 +18,8 @@ export interface LoggedBoundary {
   id: string;
   boundaryType: BoundaryTypeName;
   situation: string;
-  desiredOutcome: string; // Added
-  pastAttempts?: string; // Added
+  desiredOutcome: string; 
+  pastAttempts?: string; 
   recommendation: string;
   status: BoundaryStatus;
   createdAt: number; 
@@ -57,11 +57,9 @@ function getUserData(): UserData {
     try {
       const parsedData = JSON.parse(data) as UserData;
       if (Array.isArray(parsedData.boundaries)) {
-        // Ensure all boundaries have the new fields, provide defaults if missing
         parsedData.boundaries = parsedData.boundaries.map(b => ({
           ...b,
-          desiredOutcome: b.desiredOutcome || "Not specified", // Default for older entries
-          // pastAttempts can remain undefined if not present
+          desiredOutcome: b.desiredOutcome || "Not specified", 
         }));
         return parsedData;
       }
@@ -82,7 +80,6 @@ function saveUserData(data: UserData): void {
     return;
   }
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-  // Dispatch a custom event so other components (like dashboard) can react to data changes
   window.dispatchEvent(new CustomEvent('statsUpdated'));
 }
 
@@ -133,12 +130,14 @@ export function getBoundaryById(id: string): LoggedBoundary | undefined {
   return userData.boundaries.find(b => b.id === id);
 }
 
-export function getBoundaries(filterType?: BoundaryTypeName): LoggedBoundary[] {
+export function getBoundaries(statusFilter?: BoundaryStatus | 'all'): LoggedBoundary[] {
   const userData = getUserData();
   let filteredBoundaries = userData.boundaries;
-  if (filterType) {
-    filteredBoundaries = filteredBoundaries.filter(b => b.boundaryType === filterType);
+
+  if (statusFilter && statusFilter !== 'all') {
+    filteredBoundaries = filteredBoundaries.filter(b => b.status === statusFilter);
   }
+  // if statusFilter is 'all' or undefined, return all boundaries
   return filteredBoundaries.sort((a, b) => b.createdAt - a.createdAt);
 }
 
@@ -158,10 +157,9 @@ export function getAggregatedStats(): AggregatedStats {
 
   userData.boundaries.forEach(boundary => {
     totalDefined++;
-    if (byTypeStats[boundary.boundaryType]) { // Ensure type exists
+    if (byTypeStats[boundary.boundaryType]) { 
         byTypeStats[boundary.boundaryType].defined++;
     }
-
 
     if (boundary.status === 'successful') {
       totalSuccessful++;
@@ -173,7 +171,7 @@ export function getAggregatedStats(): AggregatedStats {
       if (byTypeStats[boundary.boundaryType]) {
         byTypeStats[boundary.boundaryType].challenged++;
       }
-    } else {
+    } else { // 'pending'
       totalPending++;
       if (byTypeStats[boundary.boundaryType]) {
         byTypeStats[boundary.boundaryType].pending++;
