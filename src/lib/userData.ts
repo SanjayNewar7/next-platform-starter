@@ -55,11 +55,21 @@ function getUserData(): UserData {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (data) {
     try {
-      const parsedData = JSON.parse(data) as UserData;
+      const parsedData = JSON.parse(data) as UserData; // Assume it might be UserData or an older shape
       if (Array.isArray(parsedData.boundaries)) {
-        parsedData.boundaries = parsedData.boundaries.map(b => ({
-          ...b,
-          desiredOutcome: b.desiredOutcome || "Not specified", 
+        // Map to ensure all fields of LoggedBoundary are present and correctly typed
+        parsedData.boundaries = parsedData.boundaries.map((b: any) => ({
+          id: typeof b.id === 'string' ? b.id : (Date.now().toString() + Math.random().toString(36).substring(2, 9)),
+          boundaryType: allBoundaryTypes.includes(b.boundaryType) ? b.boundaryType : allBoundaryTypes[0],
+          situation: typeof b.situation === 'string' ? b.situation : "Situation not specified",
+          // Ensure desiredOutcome is a string; default to empty if not a string (e.g. undefined from old data)
+          // The display card will hide the section if desiredOutcome is an empty string.
+          desiredOutcome: typeof b.desiredOutcome === 'string' ? b.desiredOutcome : "",
+          pastAttempts: typeof b.pastAttempts === 'string' ? b.pastAttempts : undefined,
+          recommendation: typeof b.recommendation === 'string' ? b.recommendation : "No recommendation found",
+          status: ['pending', 'successful', 'challenged'].includes(b.status) ? b.status : 'pending',
+          createdAt: typeof b.createdAt === 'number' ? b.createdAt : Date.now(),
+          loggedAt: typeof b.loggedAt === 'number' ? b.loggedAt : undefined,
         }));
         return parsedData;
       }
@@ -130,14 +140,20 @@ export function getBoundaryById(id: string): LoggedBoundary | undefined {
   return userData.boundaries.find(b => b.id === id);
 }
 
-export function getBoundaries(statusFilter?: BoundaryStatus | 'all'): LoggedBoundary[] {
+export function getBoundaries(filter?: BoundaryStatus | BoundaryTypeName | 'all'): LoggedBoundary[] {
   const userData = getUserData();
   let filteredBoundaries = userData.boundaries;
 
-  if (statusFilter && statusFilter !== 'all') {
-    filteredBoundaries = filteredBoundaries.filter(b => b.status === statusFilter);
+  if (filter && filter !== 'all') {
+    if (allBoundaryTypes.includes(filter as BoundaryTypeName)) {
+      // Filter by type, and then by pending status for the log experience page
+      filteredBoundaries = filteredBoundaries.filter(b => b.boundaryType === filter && b.status === 'pending');
+    } else if (['pending', 'successful', 'challenged'].includes(filter)) {
+      // Filter by status for the boundaries list page
+      filteredBoundaries = filteredBoundaries.filter(b => b.status === filter);
+    }
   }
-  // if statusFilter is 'all' or undefined, return all boundaries
+  // if filter is 'all' or undefined (for getAggregatedStats), return all boundaries
   return filteredBoundaries.sort((a, b) => b.createdAt - a.createdAt);
 }
 
