@@ -20,7 +20,10 @@ const BoundaryTypes = [
   "Educational", 
   "Social Relationships", 
   "Work-Life Balance", 
-  "Personal Time & Space"
+  "Personal Time & Space",
+  "Fitness & Health",
+  "Business & Entrepreneurship",
+  "Digital & Online Presence"
 ] as const;
 
 const BoundaryRecommendationInputSchema = z.object({
@@ -118,4 +121,3 @@ const boundaryRecommendationFlow = ai.defineFlow(
     return output!;
   }
 );
-

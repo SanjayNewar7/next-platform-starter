@@ -8,7 +8,10 @@ export const allBoundaryTypes = [
   "Educational", 
   "Social Relationships", 
   "Work-Life Balance", 
-  "Personal Time & Space"
+  "Personal Time & Space",
+  "Fitness & Health",
+  "Business & Entrepreneurship",
+  "Digital & Online Presence"
 ] as const;
 
 export type BoundaryTypeName = typeof allBoundaryTypes[number];
@@ -55,15 +58,12 @@ function getUserData(): UserData {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (data) {
     try {
-      const parsedData = JSON.parse(data) as UserData; // Assume it might be UserData or an older shape
+      const parsedData = JSON.parse(data) as UserData; 
       if (Array.isArray(parsedData.boundaries)) {
-        // Map to ensure all fields of LoggedBoundary are present and correctly typed
         parsedData.boundaries = parsedData.boundaries.map((b: any) => ({
           id: typeof b.id === 'string' ? b.id : (Date.now().toString() + Math.random().toString(36).substring(2, 9)),
           boundaryType: allBoundaryTypes.includes(b.boundaryType) ? b.boundaryType : allBoundaryTypes[0],
           situation: typeof b.situation === 'string' ? b.situation : "Situation not specified",
-          // Ensure desiredOutcome is a string; default to empty if not a string (e.g. undefined from old data)
-          // The display card will hide the section if desiredOutcome is an empty string.
           desiredOutcome: typeof b.desiredOutcome === 'string' ? b.desiredOutcome : "",
           pastAttempts: typeof b.pastAttempts === 'string' ? b.pastAttempts : undefined,
           recommendation: typeof b.recommendation === 'string' ? b.recommendation : "No recommendation found",
