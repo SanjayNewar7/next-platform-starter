@@ -42,7 +42,7 @@ export default function SignupForm() {
       await signUpWithEmail(values.email, values.password); // Update to pass displayName if needed by auth context
       toast({
         title: "Sign Up Successful",
-        description: "Welcome to BoundaryWise! You are now logged in.",
+        description: "Welcome to MeroSathi! You are now logged in.",
       });
     } catch (e: any) {
       toast({

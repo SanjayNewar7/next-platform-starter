@@ -17,9 +17,9 @@ export default function CommunityForumPage() {
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="text-center mb-12">
           <Users className="h-16 w-16 text-primary mx-auto mb-4" />
-          <h1 className="text-4xl md:text-5xl font-headline font-bold text-foreground">BoundaryWise Community Forum</h1>
+          <h1 className="text-4xl md:text-5xl font-headline font-bold text-foreground">MeroSathi Community Forum</h1>
           <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto">
-            Connect, share, and learn with fellow BoundaryWise users. This is a space for mutual support and growth.
+            Connect, share, and learn with fellow MeroSathi users. This is a space for mutual support and growth.
           </p>
           <Button size="lg" className="mt-6" onClick={() => alert("Feature to start a new discussion coming soon!")}>
             <PlusCircle className="mr-2 h-5 w-5" /> Start a New Discussion (Demo)

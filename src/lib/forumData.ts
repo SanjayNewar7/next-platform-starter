@@ -36,7 +36,7 @@ export const dummyForumPosts: ForumPost[] = [
     tags: ["Financial", "Family", "Communication", "Nepali"],
     dummyComments: [
       { id: 'c1-1', author: "विवेक P.", avatarFallback: "VP", date: "२ दिन अगाडि", text: "यो समस्या धेरैको साझा हो सृजना जी। स्पष्ट तर नम्र भएर आफ्नो अवस्था बताउनु नै उत्तम हुन्छ होला। 'अहिले म आफैं अलि आर्थिक दबाबमा छु, अर्को पटक हेरौंला नि' जस्ता कुराले पनि काम गर्न सक्छ।" },
-      { id: 'c1-2', author: "रमिता S.", avatarFallback: "RS", date: "१ दिन अगाडि", text: "हो, विवेक जीले भनेको ठीक हो। आफ्नो बजेट बनाएर देखाउँदा पनि कहिलेकाहीँ उहाँहरुले बुझ्नुहुन्छ। BoundaryWise को AI assistant ले पनि यस्तोमा राम्रो सल्लाह देला।" }
+      { id: 'c1-2', author: "रमिता S.", avatarFallback: "RS", date: "१ दिन अगाडि", text: "हो, विवेक जीले भनेको ठीक हो। आफ्नो बजेट बनाएर देखाउँदा पनि कहिलेकाहीँ उहाँहरुले बुझ्नुहुन्छ। MeroSathi को AI assistant ले पनि यस्तोमा राम्रो सल्लाह देला।" }
     ]
   },
   {
@@ -53,7 +53,7 @@ export const dummyForumPosts: ForumPost[] = [
     dummyComments: [
       { id: 'c2-1', author: "Anjali G.", avatarFallback: "AG", date: "4 days ago", text: "It's tough, Rohan. I started blocking out 'focus time' in my calendar and communicating my working hours clearly. It took time, but my team is slowly respecting it more." },
       { id: 'c2-2', author: "Prakash K.", avatarFallback: "PK", date: "4 days ago", text: "I had a frank conversation with my manager about workload and expectations. It wasn't easy, but it led to some positive changes. Sometimes direct communication is key." },
-      { id: 'c2-3', author: "UserX", avatarFallback: "UX", date: "3 days ago", text: "The AI assistant in this app actually gave me some good phrases to use with my boss. Might be worth a try!" }
+      { id: 'c2-3', author: "UserX", avatarFallback: "UX", date: "3 days ago", text: "The AI assistant in this app (MeroSathi) actually gave me some good phrases to use with my boss. Might be worth a try!" }
     ]
   },
   {
@@ -81,10 +81,10 @@ export const dummyForumPosts: ForumPost[] = [
     replies: 1,
     upvotes: 62,
     snippet: "I used the AI assistant's advice to decline extra projects from my manager without sounding uncooperative. It actually worked!",
-    fullContent: "Just wanted to share a small win here! I was struggling with my manager constantly giving me extra projects that were outside my core responsibilities and capacity. I used the BoundaryWise AI assistant to get some phrases and strategies on how to decline politely but firmly. I explained my current workload and offered to help prioritize or see if someone else could take it on. To my surprise, my manager understood and didn't push back. Feeling so much better and less stressed!",
+    fullContent: "Just wanted to share a small win here! I was struggling with my manager constantly giving me extra projects that were outside my core responsibilities and capacity. I used the MeroSathi AI assistant to get some phrases and strategies on how to decline politely but firmly. I explained my current workload and offered to help prioritize or see if someone else could take it on. To my surprise, my manager understood and didn't push back. Feeling so much better and less stressed!",
     tags: ["Work-Life Balance", "Success Story", "Communication"],
     dummyComments: [
-      { id: 'c4-1', author: "Admin", avatarFallback: "BW", date: "2 weeks ago", text: "That's fantastic to hear, Prakash! Thanks for sharing your success. This is exactly what we hope BoundaryWise can help with." }
+      { id: 'c4-1', author: "Admin", avatarFallback: "MS", date: "2 weeks ago", text: "That's fantastic to hear, Prakash! Thanks for sharing your success. This is exactly what we hope MeroSathi can help with." }
     ]
   }
 ];

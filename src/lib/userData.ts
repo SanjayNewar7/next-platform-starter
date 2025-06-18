@@ -1,7 +1,7 @@
 
 'use client';
 
-const LOCAL_STORAGE_KEY = 'boundaryWiseUserData_v2'; 
+const LOCAL_STORAGE_KEY = 'meroSathiUserData_v1'; 
 
 export const allBoundaryTypes = [
   "Financial", 
@@ -10,7 +10,7 @@ export const allBoundaryTypes = [
   "Work-Life Balance", 
   "Personal Time & Space",
   "Fitness & Health",
-  "Business & Entrepreneurship" 
+  "Business & Entrepreneurship"
 ] as const;
 
 export type BoundaryTypeName = typeof allBoundaryTypes[number];

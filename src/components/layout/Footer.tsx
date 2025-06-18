@@ -15,7 +15,7 @@ export default function Footer() {
     event.preventDefault();
     toast({
       title: "Subscription Received!",
-      description: "Thank you for subscribing to BoundaryWise updates and news.",
+      description: "Thank you for subscribing to MeroSathi updates and news.",
     });
     (event.target as HTMLFormElement).reset();
   };
@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-8 md:p-12 rounded-xl shadow-lg mb-16 flex flex-col md:flex-row items-center text-white overflow-hidden">
           <div className="md:w-2/3 space-y-6 text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">
-              Connect with BoundaryWise
+              Connect with MeroSathi
             </h2>
             <p className="text-lg md:text-xl opacity-90">
               Explore resources, get support, and start your journey to healthier boundaries today.
@@ -98,7 +98,7 @@ export default function Footer() {
         <div className="text-center text-muted-foreground text-sm mb-12 space-y-4 py-8 border-y border-border/30">
           <div>
             <p className="max-w-2xl mx-auto leading-relaxed">
-              Setting healthy boundaries is a journey of self-discovery and empowerment. Be kind to yourself, celebrate every step, and remember BoundaryWise is here to support you. You&apos;re not alone in this.
+              Setting healthy boundaries is a journey of self-discovery and empowerment. Be kind to yourself, celebrate every step, and remember MeroSathi is here to support you. You&apos;re not alone in this.
             </p>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0"> {/* Logo */}
               <Shield className="h-6 w-6 text-primary" />
-              <span className="font-headline text-lg font-semibold text-foreground">BoundaryWise</span>
+              <span className="font-headline text-lg font-semibold text-foreground">MeroSathi</span>
             </div>
             
             {/* Policy Links and Copyright - Centered Block */}
@@ -118,7 +118,7 @@ export default function Footer() {
                 <Link href="/terms-of-service" className="hover:text-primary whitespace-nowrap">Terms of Service</Link>
                 <Link href="/cookie-policy" className="hover:text-primary whitespace-nowrap">Cookie Policy</Link>
               </div>
-              <p className="mt-1">&copy; {new Date().getFullYear()} BoundaryWise. All rights reserved.</p>
+              <p className="mt-1">&copy; {new Date().getFullYear()} MeroSathi. All rights reserved.</p>
             </div>
 
             <div className="flex gap-4"> {/* Social Icons */}

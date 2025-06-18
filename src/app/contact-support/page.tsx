@@ -71,8 +71,8 @@ export default function ContactSupportPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-2">For direct inquiries, you can email us at:</p>
-                <a href="mailto:support@boundarywise.example.com" className="text-primary font-medium hover:underline text-lg">
-                  support@boundarywise.example.com
+                <a href="mailto:support@merosathi.example.com" className="text-primary font-medium hover:underline text-lg">
+                  support@merosathi.example.com
                 </a>
                 <p className="text-xs text-muted-foreground mt-1">(Please note this is a placeholder email address)</p>
               </CardContent>

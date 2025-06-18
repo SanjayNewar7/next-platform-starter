@@ -20,7 +20,7 @@ export default function CookiePolicyPage() {
           </CardHeader>
           <CardContent className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-foreground/80 leading-relaxed space-y-6 px-6 md:px-10 pb-10">
             <p>
-              This Cookie Policy explains how BoundaryWise ("we," "us," or "our") uses cookies and similar technologies when you visit our application. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
+              This Cookie Policy explains how MeroSathi ("we," "us," or "our") uses cookies and similar technologies when you visit our application. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">1. What Are Cookies?</h2>
@@ -28,12 +28,12 @@ export default function CookiePolicyPage() {
               Cookies are small data files that are placed on your computer or mobile device when you visit a website or use an application. Cookies are widely used by website and application owners in order to make their services work, or to work more efficiently, as well as to provide reporting information.
             </p>
             <p>
-              Cookies set by the application owner (in this case, BoundaryWise) are called "first-party cookies." Cookies set by parties other than the application owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website/application (e.g., advertising, interactive content, and analytics).
+              Cookies set by the application owner (in this case, MeroSathi) are called "first-party cookies." Cookies set by parties other than the application owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website/application (e.g., advertising, interactive content, and analytics).
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">2. How We Use Cookies (Current Mock Implementation)</h2>
             <p>
-              In the current version of BoundaryWise, our use of traditional cookies is minimal as the application primarily relies on your browser's <strong>local storage</strong> for its core functionality (like mock authentication and storing your boundary data).
+              In the current version of MeroSathi, our use of traditional cookies is minimal as the application primarily relies on your browser's <strong>local storage</strong> for its core functionality (like mock authentication and storing your boundary data).
             </p>
             <ul className="list-disc list-inside space-y-2 pl-4">
               <li>
@@ -44,11 +44,11 @@ export default function CookiePolicyPage() {
                 </ul>
               </li>
               <li>
-                <strong>Essential Cookies (Potentially by Framework/Platform):</strong> While BoundaryWise itself doesn't actively set many cookies for its core logic in this version, the underlying web framework (Next.js) or hosting platform might use essential cookies for session management, security, or basic functionality. These are typically necessary for the site to operate.
+                <strong>Essential Cookies (Potentially by Framework/Platform):</strong> While MeroSathi itself doesn't actively set many cookies for its core logic in this version, the underlying web framework (Next.js) or hosting platform might use essential cookies for session management, security, or basic functionality. These are typically necessary for the site to operate.
               </li>
             </ul>
             <p>
-              Future versions of BoundaryWise, especially if a full backend and real authentication are implemented, may use cookies more extensively for purposes such as:
+              Future versions of MeroSathi, especially if a full backend and real authentication are implemented, may use cookies more extensively for purposes such as:
             </p>
             <ul className="list-disc list-inside space-y-2 pl-4">
                 <li><strong>Authentication:</strong> To keep you logged in and manage your session securely.</li>
@@ -73,7 +73,7 @@ export default function CookiePolicyPage() {
                 <strong>Browser Controls:</strong> Most web browsers allow some control of most cookies through the browser settings. You can set your browser to block cookies or to alert you when cookies are being sent. If you disable cookies, you may still use our application, though some functionalities might be impaired.
               </li>
               <li>
-                <strong>Local Storage:</strong> You can clear BoundaryWise's local storage data through your browser settings (usually found under "Clear browsing data," "Site settings," or similar options). Doing so will log you out of the mock authentication and remove all saved boundary data.
+                <strong>Local Storage:</strong> You can clear MeroSathi's local storage data through your browser settings (usually found under "Clear browsing data," "Site settings," or similar options). Doing so will log you out of the mock authentication and remove all saved boundary data.
               </li>
             </ul>
 

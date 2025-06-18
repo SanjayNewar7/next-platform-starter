@@ -28,7 +28,7 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
           <Shield className="h-7 w-7" />
-          <span className="font-headline">BoundaryWise</span>
+          <span className="font-headline">MeroSathi</span>
         </Link>
         <nav className="flex items-center gap-2 md:gap-4">
           {user && (

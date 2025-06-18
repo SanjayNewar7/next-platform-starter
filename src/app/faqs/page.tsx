@@ -7,12 +7,12 @@ import { HelpCircle } from 'lucide-react';
 
 const faqData = [
   {
-    question: "What is BoundaryWise?",
-    answer: "BoundaryWise is an application designed to help users, especially within the Nepali context, understand, define, and maintain healthy personal boundaries. It offers an AI-powered assistant for personalized advice and tools to track your boundary-setting journey."
+    question: "What is MeroSathi?",
+    answer: "MeroSathi is an application designed to help users, especially within the Nepali context, understand, define, and maintain healthy personal boundaries. It offers an AI-powered assistant for personalized advice and tools to track your boundary-setting journey."
   },
   {
-    question: "Who is BoundaryWise for?",
-    answer: "BoundaryWise is for anyone looking to improve their personal or professional relationships by setting clearer boundaries. While it has a special consideration for Nepali cultural nuances, its principles are applicable to a wide audience."
+    question: "Who is MeroSathi for?",
+    answer: "MeroSathi is for anyone looking to improve their personal or professional relationships by setting clearer boundaries. While it has a special consideration for Nepali cultural nuances, its principles are applicable to a wide audience."
   },
   {
     question: "How does the AI Assistant work?",
@@ -20,7 +20,7 @@ const faqData = [
   },
   {
     question: "Is my data private and secure?",
-    answer: "BoundaryWise uses your browser's local storage to save your boundary data and preferences. This means your data stays on your device and is not sent to any external server in this current version. We prioritize your privacy."
+    answer: "MeroSathi uses your browser's local storage to save your boundary data and preferences. This means your data stays on your device and is not sent to any external server in this current version. We prioritize your privacy."
   },
   {
     question: "How do I log my experiences with setting boundaries?",
@@ -39,12 +39,12 @@ const faqData = [
     answer: "The Dashboard provides an overview of your boundary-setting journey. It shows statistics like total boundaries defined, successful implementations, challenging situations, and your overall progress rate. The data is visualized in charts and summary cards."
   },
   {
-    question: "Is BoundaryWise free to use?",
-    answer: "Yes, BoundaryWise is currently a project developed by Sanjaya Rajbhandari and is free to use."
+    question: "Is MeroSathi free to use?",
+    answer: "Yes, MeroSathi is currently a project developed by Sanjaya Rajbhandari and is free to use."
   },
   {
-    question: "Who created BoundaryWise?",
-    answer: "BoundaryWise was created by Sanjaya Rajbhandari, a Graphics Designer and final-year Bachelor in Computer Applications (BCA) student, as a project to combine his passion for design and technology to help individuals."
+    question: "Who created MeroSathi?",
+    answer: "MeroSathi was created by Sanjaya Rajbhandari, a Graphics Designer and final-year Bachelor in Computer Applications (BCA) student, as a project to combine his passion for design and technology to help individuals."
   }
 ];
 
@@ -58,7 +58,7 @@ export default function FAQsPage() {
             <HelpCircle className="h-12 w-12 text-primary mx-auto mb-4" />
             <CardTitle className="text-3xl md:text-4xl font-headline text-foreground">Frequently Asked Questions</CardTitle>
             <CardDescription className="text-lg text-muted-foreground mt-2">
-              Find answers to common questions about BoundaryWise.
+              Find answers to common questions about MeroSathi.
             </CardDescription>
           </CardHeader>
           <div className="p-6 md:p-10">

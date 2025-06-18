@@ -15,7 +15,7 @@ export default function HelpCenterPage() {
           <LifeBuoy className="h-16 w-16 text-primary mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-headline font-bold text-foreground">Help Center</h1>
           <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto">
-            Welcome to the BoundaryWise Help Center. Find resources, get support, and connect with our community.
+            Welcome to the MeroSathi Help Center. Find resources, get support, and connect with our community.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export default function HelpCenterPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-muted-foreground">
-                Connect with others, share experiences, and learn from the BoundaryWise community.
+                Connect with others, share experiences, and learn from the MeroSathi community.
               </p>
               <Button asChild variant="outline">
                 <Link href="/community-forum" className="flex items-center">
@@ -86,7 +86,7 @@ export default function HelpCenterPage() {
         <Card className="mt-12 shadow-lg bg-card">
             <CardHeader>
                 <CardTitle className="font-headline text-xl flex items-center gap-2">Connect with the Creator</CardTitle>
-                <CardDescription>Reach out to Sanjaya Rajbhandari, the creator of BoundaryWise.</CardDescription>
+                <CardDescription>Reach out to Sanjaya Rajbhandari, the creator of MeroSathi.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4">
                 <Button asChild variant="outline" className="w-full sm:w-auto">

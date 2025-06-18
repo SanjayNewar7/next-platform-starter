@@ -15,7 +15,7 @@ export default function LoginPage() {
       <main className="flex-grow flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-headline">Log In to BoundaryWise</CardTitle>
+            <CardTitle className="text-2xl font-headline">Log In to MeroSathi</CardTitle>
             <CardDescription>Access your dashboard and boundary assistant.</CardDescription>
           </CardHeader>
           <CardContent>

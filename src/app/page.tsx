@@ -15,7 +15,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <ShieldCheck className="h-20 w-20 text-primary mx-auto mb-8" />
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-foreground mb-8">
-              Welcome to <span className="text-primary">BoundaryWise</span>
+              Welcome to <span className="text-primary">MeroSathi</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">
               Tapailai swagat cha! Understand, create, and maintain healthy personal boundaries for a more fulfilling life in Nepal.
@@ -74,7 +74,7 @@ export default function HomePage() {
               Ready to Build Healthier Relationships in Your Life?
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              Join BoundaryWise today and start your journey towards personal empowerment and well-being, with support tailored for you.
+              Join MeroSathi today and start your journey towards personal empowerment and well-being, with support tailored for you.
             </p>
             <Button size="lg" asChild>
               <Link href="/signup">

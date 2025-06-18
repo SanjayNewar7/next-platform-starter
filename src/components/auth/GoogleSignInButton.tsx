@@ -28,7 +28,7 @@ export default function GoogleSignInButton() {
       await signInWithGoogle();
       toast({
         title: "Signed in with Google",
-        description: "Welcome to BoundaryWise!",
+        description: "Welcome to MeroSathi!",
       });
     } catch (error: any) {
       toast({

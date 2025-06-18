@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 
 
 export const metadata: Metadata = {
-  title: 'BoundaryWise - Personal Boundary Setting',
+  title: 'MeroSathi - Personal Boundary Setting',
   description: 'Empowering you to set healthy personal boundaries.',
 };
 

@@ -15,7 +15,7 @@ export default function SignupPage() {
       <main className="flex-grow flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-headline">Create your BoundaryWise Account</CardTitle>
+            <CardTitle className="text-2xl font-headline">Create your MeroSathi Account</CardTitle>
             <CardDescription>Start your journey to healthier boundaries today.</CardDescription>
           </CardHeader>
           <CardContent>

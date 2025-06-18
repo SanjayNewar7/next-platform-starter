@@ -20,17 +20,17 @@ export default function TermsOfServicePage() {
           </CardHeader>
           <CardContent className="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-foreground/80 leading-relaxed space-y-6 px-6 md:px-10 pb-10">
             <p>
-              Welcome to BoundaryWise ("the Application"). These Terms of Service ("Terms") govern your use of the Application. By accessing or using BoundaryWise, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Application.
+              Welcome to MeroSathi ("the Application"). These Terms of Service ("Terms") govern your use of the Application. By accessing or using MeroSathi, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use the Application.
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">1. Acceptance of Terms</h2>
             <p>
-              By using BoundaryWise, you affirm that you are of legal age to enter into these Terms, or, if you are not, that you have obtained parental or guardian consent to enter into these Terms.
+              By using MeroSathi, you affirm that you are of legal age to enter into these Terms, or, if you are not, that you have obtained parental or guardian consent to enter into these Terms.
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">2. Use of the Service</h2>
             <p>
-              BoundaryWise provides tools and AI-powered assistance to help users understand, establish, and maintain personal boundaries. You agree to use the Application only for lawful purposes and in accordance with these Terms.
+              MeroSathi provides tools and AI-powered assistance to help users understand, establish, and maintain personal boundaries. You agree to use the Application only for lawful purposes and in accordance with these Terms.
             </p>
             <ul className="list-disc list-inside space-y-2 pl-4">
               <li>
@@ -40,28 +40,28 @@ export default function TermsOfServicePage() {
                 <strong>Mock Features:</strong> Certain features, such as user authentication and data storage, are currently implemented as mock, client-side functionalities. Data is stored in your browser's local storage and is not transmitted to external servers for these mock features.
               </li>
                <li>
-                <strong>AI-Generated Content:</strong> The advice and suggestions provided by the AI assistant are for informational purposes only and should not be considered professional advice (e.g., legal, medical, psychological). You are responsible for your own decisions and actions based on such content. BoundaryWise does not guarantee the accuracy, completeness, or usefulness of any AI-generated content.
+                <strong>AI-Generated Content:</strong> The advice and suggestions provided by the AI assistant are for informational purposes only and should not be considered professional advice (e.g., legal, medical, psychological). You are responsible for your own decisions and actions based on such content. MeroSathi does not guarantee the accuracy, completeness, or usefulness of any AI-generated content.
               </li>
             </ul>
 
             <h2 className="text-xl font-semibold text-foreground">3. Intellectual Property</h2>
             <p>
-              The Application and its original content (excluding user-provided input to the AI), features, and functionality are and will remain the exclusive property of Sanjaya Rajbhandari and BoundaryWise. The Application is protected by copyright, trademark, and other laws.
+              The Application and its original content (excluding user-provided input to the AI), features, and functionality are and will remain the exclusive property of Sanjaya Rajbhandari and MeroSathi. The Application is protected by copyright, trademark, and other laws.
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">4. User Data and Privacy</h2>
             <p>
-              Your use of BoundaryWise is also governed by our <Link href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>, which explains how we handle your data. As stated, current data handling is primarily client-side using local storage.
+              Your use of MeroSathi is also governed by our <Link href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>, which explains how we handle your data. As stated, current data handling is primarily client-side using local storage.
             </p>
             
             <h2 className="text-xl font-semibold text-foreground">5. Disclaimers</h2>
             <p>
-              THE APPLICATION IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. BOUNDARYWISE MAKES NO WARRANTIES, EXPRESS OR IMPLIED, REGARDING THE APPLICATION, INCLUDING BUT NOT LIMITED TO ITS ACCURACY, RELIABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. WE DO NOT WARRANT THAT THE APPLICATION WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS.
+              THE APPLICATION IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. MEROSATHI MAKES NO WARRANTIES, EXPRESS OR IMPLIED, REGARDING THE APPLICATION, INCLUDING BUT NOT LIMITED TO ITS ACCURACY, RELIABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. WE DO NOT WARRANT THAT THE APPLICATION WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS.
             </p>
 
             <h2 className="text-xl font-semibold text-foreground">6. Limitation of Liability</h2>
             <p>
-              TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL BOUNDARYWISE OR SANJAYA RAJBHANDARI BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM (I) YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE APPLICATION; (II) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE APPLICATION; OR (III) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT.
+              TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL MEROSATHI OR SANJAYA RAJBHANDARI BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM (I) YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE APPLICATION; (II) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE APPLICATION; OR (III) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT.
             </p>
             
             <h2 className="text-xl font-semibold text-foreground">7. Termination</h2>
