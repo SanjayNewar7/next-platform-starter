@@ -52,7 +52,7 @@ export default function Footer() {
             />
              <div className="absolute text-white/20 h-48 w-48 -bottom-12 -right-12 transform rotate-12 opacity-30">
                 <Image 
-                    src="/images/merosathi-logo.png" 
+                    src="https://i.ibb.co/J3g4zT2/merosathi-logo.png" 
                     alt="MeroSathi Decorative Logo" 
                     width={150} 
                     height={150} 
@@ -115,7 +115,7 @@ export default function Footer() {
         <div className="text-xs text-muted-foreground">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0"> {/* Logo */}
-              <Image src="/images/merosathi-logo.png" alt="MeroSathi Logo" width={28} height={28} />
+              <Image src="https://i.ibb.co/J3g4zT2/merosathi-logo.png" alt="MeroSathi Logo" width={28} height={28} />
               <span className="font-headline text-lg font-semibold text-foreground">MeroSathi</span>
             </div>
             

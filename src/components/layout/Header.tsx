@@ -28,7 +28,7 @@ export default function Header() {
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-primary">
-          <Image src="/images/merosathi-logo.png" alt="MeroSathi Logo" width={32} height={32} />
+          <Image src="https://i.ibb.co/J3g4zT2/merosathi-logo.png" alt="MeroSathi Logo" width={32} height={32} />
           <span className="font-headline">MeroSathi</span>
         </Link>
         <nav className="flex items-center gap-2 md:gap-4">
