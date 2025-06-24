@@ -2,5 +2,5 @@
 // It has been simplified to prevent build errors.
 // The active layout is located at src/app/layout.tsx.
 export default function RootLayout({ children }) {
-    return <>{children}</>;
+    return null;
 }
