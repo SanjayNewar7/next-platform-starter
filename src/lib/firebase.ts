@@ -8,19 +8,18 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyD3T1R4464yDJaX4gSldr9A-BOX9dLUdJY",
+  authDomain: "merosathi-7213c.firebaseapp.com",
+  projectId: "merosathi-7213c",
+  storageBucket: "merosathi-7213c.appspot.com",
+  messagingSenderId: "267389955706",
+  appId: "1:267389955706:web:33c078afb16a80680015c3",
+  measurementId: "G-ZHYFCFQLXG"
 };
 
-// Validate that the Firebase API key is present.
-if (!firebaseConfig.apiKey) {
-    throw new Error('Firebase API key is not defined. Please add NEXT_PUBLIC_FIREBASE_API_KEY to your .env.local file and restart the development server.');
-}
+// IMPORTANT: The configuration above is hardcoded for now to get you unblocked.
+// For security, you should move these keys to a `.env.local` file and use `process.env.NEXT_PUBLIC_...` to read them.
+// Do not commit this file with keys to a public repository.
 
 // Initialize Firebase
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
