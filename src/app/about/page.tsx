@@ -10,7 +10,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary/20">
       <Header />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="space-y-12">
           <Card className="shadow-xl overflow-hidden">
             <div className="md:flex">

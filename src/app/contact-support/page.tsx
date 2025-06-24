@@ -20,7 +20,7 @@ export default function ContactSupportPage() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary/20">
       <Header />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="text-center mb-12">
           <MessageSquare className="h-16 w-16 text-primary mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-headline font-bold text-foreground">Contact Support</h1>
