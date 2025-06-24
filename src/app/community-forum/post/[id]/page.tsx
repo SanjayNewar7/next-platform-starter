@@ -112,7 +112,7 @@ export default function ForumPostPage() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary/20">
       <Header />
-      <main className="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <main className="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <Button variant="outline" onClick={() => router.back()} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Forum
         </Button>
