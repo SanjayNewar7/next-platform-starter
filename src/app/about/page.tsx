@@ -16,7 +16,7 @@ export default function AboutPage() {
             <div className="md:flex">
               <div className="md:w-1/2">
                 <Image
-                  src="https://placehold.co/600x450.png"
+                  src="/images/website_image.png"
                   alt="Supportive community illustration"
                   width={600}
                   height={450}
@@ -50,7 +50,7 @@ export default function AboutPage() {
              <div className="md:flex md:flex-row-reverse">
               <div className="md:w-1/2">
                 <Image
-                  src="https://placehold.co/600x450.png"
+                  src="/images/creator_image.png"
                   alt="Creator Sanjaya Rajbhandari"
                   width={600}
                   height={450}
@@ -62,7 +62,7 @@ export default function AboutPage() {
                 <CardHeader className="px-0 pt-0">
                     <div className="flex items-center gap-3 mb-4">
                         <Avatar className="h-16 w-16 border-2 border-primary">
-                            <AvatarImage src="https://placehold.co/100x100.png" alt="Sanjaya Rajbhandari" data-ai-hint="profile picture" />
+                            <AvatarImage src="/images/creator_image.png" alt="Sanjaya Rajbhandari" data-ai-hint="profile picture" />
                             <AvatarFallback className="text-2xl">SR</AvatarFallback>
                         </Avatar>
                         <div>
