@@ -17,6 +17,11 @@ const firebaseConfig: FirebaseOptions = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
+// Validate that the Firebase API key is present.
+if (!firebaseConfig.apiKey) {
+    throw new Error('Firebase API key is not defined. Please add NEXT_PUBLIC_FIREBASE_API_KEY to your .env.local file and restart the development server.');
+}
+
 // Initialize Firebase
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
