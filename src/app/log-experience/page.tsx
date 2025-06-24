@@ -15,8 +15,10 @@ import { ThumbsUp, Frown, Edit3, MessageSquareText, Sparkles, ListChecks, HelpCi
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from 'next/link';
+import { useAuth } from '@/components/auth-provider';
 
 export default function MyExperiencePage() {
+  const { user } = useAuth();
   const [selectedBoundaryType, setSelectedBoundaryType] = useState<BoundaryTypeName | "">("");
   const [availableBoundaries, setAvailableBoundaries] = useState<LoggedBoundary[]>([]);
   const [selectedBoundaryId, setSelectedBoundaryId] = useState<string>("");
@@ -31,27 +33,29 @@ export default function MyExperiencePage() {
   const [followUpRecommendation, setFollowUpRecommendation] = useState<BoundaryRecommendationOutput | null>(null);
 
   useEffect(() => {
-    if (selectedBoundaryType) {
-      const boundaries = getBoundaries(selectedBoundaryType).filter(b => b.status === 'pending');
-      setAvailableBoundaries(boundaries);
-      setSelectedBoundaryId(""); 
-      setShowFollowUpButton(false);
-      setFollowUpRecommendation(null);
-      setChallengeDescription("");
-    } else {
-      setAvailableBoundaries([]);
-      setSelectedBoundaryId("");
-      setShowFollowUpButton(false);
-      setFollowUpRecommendation(null);
-      setChallengeDescription("");
-    }
-  }, [selectedBoundaryType]);
+    const fetchPendingBoundaries = async () => {
+      if (selectedBoundaryType && user) {
+        const boundaries = await getBoundaries(selectedBoundaryType); // This now only gets pending ones of that type
+        setAvailableBoundaries(boundaries);
+        setSelectedBoundaryId(""); 
+        setShowFollowUpButton(false);
+        setFollowUpRecommendation(null);
+        setChallengeDescription("");
+      } else {
+        setAvailableBoundaries([]);
+        setSelectedBoundaryId("");
+        setShowFollowUpButton(false);
+        setFollowUpRecommendation(null);
+        setChallengeDescription("");
+      }
+    };
+
+    fetchPendingBoundaries();
+  }, [selectedBoundaryType, user]);
 
   useEffect(() => {
-    // Reset follow-up state if selected boundary changes
     setShowFollowUpButton(false);
     setFollowUpRecommendation(null);
-    // Keep challengeDescription as it might be typed before selecting a boundary
   }, [selectedBoundaryId]);
 
 
@@ -65,7 +69,7 @@ export default function MyExperiencePage() {
     setFollowUpRecommendation(null);
   };
 
-  const handleLogOutcome = (outcome: 'successful' | 'challenged') => {
+  const handleLogOutcome = async (outcome: 'successful' | 'challenged') => {
     if (!selectedBoundaryId) {
       toast({
         title: "Select Specific Boundary",
@@ -74,24 +78,25 @@ export default function MyExperiencePage() {
       });
       return;
     }
+    
+    try {
+      await logBoundaryOutcome(selectedBoundaryId, outcome);
+      setFollowUpRecommendation(null);
 
-    logBoundaryOutcome(selectedBoundaryId, outcome);
-    setFollowUpRecommendation(null); // Clear any existing follow-up advice
-
-    if (outcome === 'successful') {
-      setShowFollowUpButton(false);
-      setIsFeedbackDialogOpen(true); 
-    } else { // Challenged
-      toast({
-        title: "Challenge Logged",
-        description: `Your challenging experience has been recorded. ${challengeDescription ? `Details: "${challengeDescription.substring(0,50)}..."` : ''}`,
-        variant: "default",
-      });
-      // Don't reset the whole form, just update available boundaries and set up for follow-up
-      const updatedBoundaries = getBoundaries(selectedBoundaryType as BoundaryTypeName).filter(b => b.status === 'pending');
-      setAvailableBoundaries(updatedBoundaries);
-      setShowFollowUpButton(true); // Show button to get new advice
-      // setSelectedBoundaryId(""); // Keep selected ID for follow-up context
+      if (outcome === 'successful') {
+        setShowFollowUpButton(false);
+        setIsFeedbackDialogOpen(true);
+      } else {
+        toast({
+          title: "Challenge Logged",
+          description: `Your challenging experience has been recorded. ${challengeDescription ? `Details: "${challengeDescription.substring(0,50)}..."` : ''}`,
+        });
+        const updatedBoundaries = await getBoundaries(selectedBoundaryType as BoundaryTypeName);
+        setAvailableBoundaries(updatedBoundaries.filter(b => b.status === 'pending'));
+        setShowFollowUpButton(true);
+      }
+    } catch(e: any) {
+        toast({ title: "Error Logging Outcome", description: e.message, variant: "destructive" });
     }
   };
   
@@ -99,7 +104,6 @@ export default function MyExperiencePage() {
     toast({
       title: "Experience Logged!",
       description: `Your successful experience has been recorded. ${successFeedback ? `Your feedback: "${successFeedback.substring(0,50)}..."` : 'Great job!'}`,
-      variant: "default",
     });
     setIsFeedbackDialogOpen(false);
     resetForm();
@@ -110,7 +114,6 @@ export default function MyExperiencePage() {
          toast({
             title: "Experience Logged!",
             description: `Your successful experience has been recorded. Keep it up!`,
-            variant: "default",
         });
     }
     setIsFeedbackDialogOpen(false);
@@ -127,21 +130,22 @@ export default function MyExperiencePage() {
       return;
     }
 
-    const challengedBoundary = getBoundaryById(selectedBoundaryId);
-    if (!challengedBoundary) {
-      toast({ title: "Error", description: "Could not find the selected boundary details.", variant: "destructive" });
-      return;
-    }
-
     setIsGeneratingFollowUp(true);
     setFollowUpRecommendation(null);
 
     try {
+      const challengedBoundary = await getBoundaryById(selectedBoundaryId);
+      if (!challengedBoundary) {
+        toast({ title: "Error", description: "Could not find the selected boundary details.", variant: "destructive" });
+        setIsGeneratingFollowUp(false);
+        return;
+      }
+      
       const input: BoundaryRecommendationInput = {
         boundaryType: challengedBoundary.boundaryType,
-        situation: challengedBoundary.situation, // Original situation
-        desiredOutcome: challengedBoundary.desiredOutcome, // Original desired outcome
-        pastAttempts: challengedBoundary.pastAttempts, // Original past attempts
+        situation: challengedBoundary.situation,
+        desiredOutcome: challengedBoundary.desiredOutcome,
+        pastAttempts: challengedBoundary.pastAttempts,
         isFollowUp: true,
         previousRecommendation: challengedBoundary.recommendation,
         challengeDescription: challengeDescription,
@@ -151,7 +155,6 @@ export default function MyExperiencePage() {
       toast({
         title: "New Advice Generated",
         description: "AI has provided a new strategy based on your challenge.",
-        variant: "default",
       });
     } catch (e: any) {
       console.error("Error getting follow-up recommendation:", e);

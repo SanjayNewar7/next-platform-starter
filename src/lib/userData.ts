@@ -1,7 +1,8 @@
-
 'use client';
 
-const LOCAL_STORAGE_KEY = 'meroSathiUserData_v1'; 
+import { db, auth } from './firebase';
+import { collection, addDoc, getDocs, query, where, doc, updateDoc, getDoc, serverTimestamp, orderBy, Query, DocumentData } from 'firebase/firestore';
+import type { Timestamp } from 'firebase/firestore';
 
 export const allBoundaryTypes = [
   "Financial", 
@@ -18,18 +19,29 @@ export type BoundaryStatus = 'pending' | 'successful' | 'challenged';
 
 export interface LoggedBoundary {
   id: string;
+  userId: string;
   boundaryType: BoundaryTypeName;
   situation: string;
-  desiredOutcome: string; 
-  pastAttempts?: string; 
+  desiredOutcome: string;
+  pastAttempts?: string;
   recommendation: string;
   status: BoundaryStatus;
-  createdAt: number; 
-  loggedAt?: number; 
+  createdAt: number; // JS timestamp
+  loggedAt?: number; // JS timestamp
 }
 
-export interface UserData {
-  boundaries: LoggedBoundary[];
+// Firestore data structure will use Timestamps
+interface FirestoreBoundary {
+    id: string;
+    userId: string;
+    boundaryType: BoundaryTypeName;
+    situation: string;
+    desiredOutcome: string;
+    pastAttempts?: string;
+    recommendation: string;
+    status: BoundaryStatus;
+    createdAt: Timestamp; 
+    loggedAt?: Timestamp;
 }
 
 export interface AggregatedStats {
@@ -46,139 +58,130 @@ export interface AggregatedStats {
   }>;
 }
 
-function getInitialData(): UserData {
-  return { boundaries: [] };
+function getCurrentUserId(): string {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No authenticated user found. Please log in.");
+  }
+  return user.uid;
 }
 
-function getUserData(): UserData {
-  if (typeof window === 'undefined') {
-    return getInitialData();
-  }
-  const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (data) {
-    try {
-      const parsedData = JSON.parse(data) as UserData; 
-      if (Array.isArray(parsedData.boundaries)) {
-        parsedData.boundaries = parsedData.boundaries.map((b: any) => ({
-          id: typeof b.id === 'string' ? b.id : (Date.now().toString() + Math.random().toString(36).substring(2, 9)),
-          boundaryType: allBoundaryTypes.includes(b.boundaryType) ? b.boundaryType : allBoundaryTypes[0],
-          situation: typeof b.situation === 'string' ? b.situation : "Situation not specified",
-          desiredOutcome: typeof b.desiredOutcome === 'string' ? b.desiredOutcome : "",
-          pastAttempts: typeof b.pastAttempts === 'string' ? b.pastAttempts : undefined,
-          recommendation: typeof b.recommendation === 'string' ? b.recommendation : "No recommendation found",
-          status: ['pending', 'successful', 'challenged'].includes(b.status) ? b.status : 'pending',
-          createdAt: typeof b.createdAt === 'number' ? b.createdAt : Date.now(),
-          loggedAt: typeof b.loggedAt === 'number' ? b.loggedAt : undefined,
-        }));
-        return parsedData;
-      }
-      console.warn("LocalStorage data for boundaries is not an array. Resetting.");
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-      return getInitialData();
-    } catch (e) {
-      console.error("Error parsing user data from localStorage", e);
-      localStorage.removeItem(LOCAL_STORAGE_KEY); 
-      return getInitialData();
-    }
-  }
-  return getInitialData();
+function getBoundariesCollectionRef() {
+    const userId = getCurrentUserId();
+    return collection(db, `users/${userId}/boundaries`);
 }
 
-function saveUserData(data: UserData): void {
-  if (typeof window === 'undefined') {
-    return;
-  }
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-  window.dispatchEvent(new CustomEvent('statsUpdated'));
-}
-
-export function addBoundary(details: {
+export async function addBoundary(details: {
   boundaryType: BoundaryTypeName;
   situation: string;
   desiredOutcome: string;
   pastAttempts?: string;
   recommendation: string;
-}): LoggedBoundary {
-  if (typeof window === 'undefined') {
-    throw new Error("addBoundary can only be called on the client.");
-  }
-  const userData = getUserData();
-  const newBoundary: LoggedBoundary = {
-    id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+}): Promise<string> {
+  const userId = getCurrentUserId();
+  const boundariesCol = getBoundariesCollectionRef();
+  
+  const newBoundaryData = {
+    userId,
     boundaryType: details.boundaryType,
     situation: details.situation,
     desiredOutcome: details.desiredOutcome,
-    pastAttempts: details.pastAttempts,
+    pastAttempts: details.pastAttempts || "",
     recommendation: details.recommendation,
-    status: 'pending',
-    createdAt: Date.now(),
+    status: 'pending' as BoundaryStatus,
+    createdAt: serverTimestamp(),
   };
-  userData.boundaries.push(newBoundary);
-  saveUserData(userData);
-  return newBoundary;
+
+  const docRef = await addDoc(boundariesCol, newBoundaryData);
+  return docRef.id;
 }
 
-export function logBoundaryOutcome(
+export async function logBoundaryOutcome(
   id: string,
   outcome: 'successful' | 'challenged'
-): void {
-  if (typeof window === 'undefined') return;
-  const userData = getUserData();
-  const boundaryIndex = userData.boundaries.findIndex(b => b.id === id);
-  if (boundaryIndex > -1) {
-    userData.boundaries[boundaryIndex].status = outcome;
-    userData.boundaries[boundaryIndex].loggedAt = Date.now();
-    saveUserData(userData);
-  } else {
-    console.warn(`Boundary with id ${id} not found for logging outcome.`);
-  }
-}
-
-export function getBoundaryById(id: string): LoggedBoundary | undefined {
-  const userData = getUserData();
-  return userData.boundaries.find(b => b.id === id);
-}
-
-export function getBoundaries(filter?: BoundaryStatus | BoundaryTypeName | 'all'): LoggedBoundary[] {
-  const userData = getUserData();
-  let filteredBoundaries = userData.boundaries;
-
-  if (filter && filter !== 'all') {
-    if (allBoundaryTypes.includes(filter as BoundaryTypeName)) {
-      // Filter by type, and then by pending status for the log experience page
-      filteredBoundaries = filteredBoundaries.filter(b => b.boundaryType === filter && b.status === 'pending');
-    } else if (['pending', 'successful', 'challenged'].includes(filter)) {
-      // Filter by status for the boundaries list page
-      filteredBoundaries = filteredBoundaries.filter(b => b.status === filter);
-    }
-  }
-  // if filter is 'all' or undefined (for getAggregatedStats), return all boundaries
-  return filteredBoundaries.sort((a, b) => b.createdAt - a.createdAt);
-}
-
-
-export function getAggregatedStats(): AggregatedStats {
-  const userData = getUserData();
-  const byTypeStats: AggregatedStats['byType'] = {} as AggregatedStats['byType'];
-
-  allBoundaryTypes.forEach(type => {
-    byTypeStats[type] = { defined: 0, successful: 0, challenged: 0, pending: 0 };
+): Promise<void> {
+  const boundaryDocRef = doc(getBoundariesCollectionRef(), id);
+  await updateDoc(boundaryDocRef, {
+    status: outcome,
+    loggedAt: serverTimestamp(),
   });
+}
+
+const mapFirestoreDocToBoundary = (doc: DocumentData): LoggedBoundary => {
+    const data = doc.data() as FirestoreBoundary;
+    return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt.toDate().getTime(),
+        loggedAt: data.loggedAt ? data.loggedAt.toDate().getTime() : undefined,
+    } as unknown as LoggedBoundary;
+};
+
+export async function getBoundaryById(id: string): Promise<LoggedBoundary | undefined> {
+    const boundaryDocRef = doc(getBoundariesCollectionRef(), id);
+    const docSnap = await getDoc(boundaryDocRef);
+
+    if (docSnap.exists()) {
+        return mapFirestoreDocToBoundary(docSnap);
+    } else {
+        return undefined;
+    }
+}
+
+export async function getBoundaries(filter?: BoundaryStatus | BoundaryTypeName | 'all'): Promise<LoggedBoundary[]> {
+    const boundariesCol = getBoundariesCollectionRef();
+    let q: Query<DocumentData>;
+
+    if (filter && filter !== 'all') {
+        if (allBoundaryTypes.includes(filter as BoundaryTypeName)) {
+            q = query(boundariesCol, where('boundaryType', '==', filter), where('status', '==', 'pending'), orderBy('createdAt', 'desc'));
+        } else if (['pending', 'successful', 'challenged'].includes(filter)) {
+            q = query(boundariesCol, where('status', '==', filter), orderBy('createdAt', 'desc'));
+        } else {
+            q = query(boundariesCol, orderBy('createdAt', 'desc'));
+        }
+    } else {
+        q = query(boundariesCol, orderBy('createdAt', 'desc'));
+    }
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(mapFirestoreDocToBoundary);
+}
+
+export async function getAggregatedStats(): Promise<AggregatedStats> {
+  const initialByType: any = {};
+  allBoundaryTypes.forEach(type => {
+     initialByType[type] = { defined: 0, successful: 0, challenged: 0, pending: 0 };
+  });
+
+  if (!auth.currentUser) {
+     return {
+        totalDefined: 0,
+        totalSuccessful: 0,
+        totalChallenged: 0,
+        totalPending: 0,
+        overallProgress: 0,
+        byType: initialByType,
+     }
+  }
+
+  const boundaries = await getBoundaries('all');
+  const byTypeStats: AggregatedStats['byType'] = initialByType;
 
   let totalDefined = 0;
   let totalSuccessful = 0;
   let totalChallenged = 0;
   let totalPending = 0;
 
-  userData.boundaries.forEach(boundary => {
+  boundaries.forEach(boundary => {
     totalDefined++;
-    if (byTypeStats[boundary.boundaryType]) { 
-        byTypeStats[boundary.boundaryType].defined++;
+    if (byTypeStats[boundary.boundaryType]) {
+      byTypeStats[boundary.boundaryType].defined++;
     }
 
     if (boundary.status === 'successful') {
       totalSuccessful++;
-      if (byTypeStats[boundary.boundaryType]) {
+       if (byTypeStats[boundary.boundaryType]) {
         byTypeStats[boundary.boundaryType].successful++;
       }
     } else if (boundary.status === 'challenged') {
@@ -186,7 +189,7 @@ export function getAggregatedStats(): AggregatedStats {
       if (byTypeStats[boundary.boundaryType]) {
         byTypeStats[boundary.boundaryType].challenged++;
       }
-    } else { // 'pending'
+    } else {
       totalPending++;
       if (byTypeStats[boundary.boundaryType]) {
         byTypeStats[boundary.boundaryType].pending++;
@@ -209,8 +212,4 @@ export function getAggregatedStats(): AggregatedStats {
     overallProgress: isNaN(finalProgress) ? 0 : finalProgress,
     byType: byTypeStats,
   };
-}
-
-if (typeof window !== 'undefined' && !localStorage.getItem(LOCAL_STORAGE_KEY)) {
-  saveUserData(getInitialData());
 }

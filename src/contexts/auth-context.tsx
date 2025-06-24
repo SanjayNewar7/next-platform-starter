@@ -1,19 +1,14 @@
 
 "use client";
 
-import type { User as FirebaseUser } from 'firebase/auth';
+import { User as FirebaseUser, onAuthStateChanged, signOut as firebaseSignOut, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-// import { auth } from '@/lib/firebase'; // Actual Firebase auth
-// import { onAuthStateChanged, signOut as firebaseSignOut, UserCredential, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '@/lib/firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
-// Mock User type
-export interface User extends Partial<FirebaseUser> {
-  id: string;
-  email: string | null;
-  displayName?: string | null;
-  photoURL?: string | null;
-}
+// The User type from Firebase is sufficient
+export type User = FirebaseUser;
 
 interface AuthContextType {
   user: User | null;
@@ -23,7 +18,7 @@ interface AuthContextType {
   signUpWithEmail: (email: string, pass: string) => Promise<void>; 
   signInWithGoogle: () => Promise<void>; 
   signOut: () => Promise<void>;
-  updateUserProfile: (newDetails: Partial<Pick<User, 'displayName' | 'photoURL'>>) => Promise<void>;
+  updateUserProfile: (newDetails: { displayName?: string, photoURL?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -40,7 +35,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Mock implementation
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,68 +42,96 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    const mockUserJson = localStorage.getItem('mockUser');
-    if (mockUserJson) {
-      setUser(JSON.parse(mockUserJson));
-    }
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
-  const updateUserProfile = async (newDetails: Partial<Pick<User, 'displayName' | 'photoURL'>>) => {
-    if (!user) {
-      setError("User not logged in to update profile.");
-      return;
+  const createUserDocument = async (user: User) => {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, {
+        email: user.email,
+        displayName: user.displayName,
+        createdAt: new Date(),
+      });
     }
-    setLoading(true);
-    setError(null);
-    // Mock profile update
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const updatedUser = { ...user, ...newDetails };
-    setUser(updatedUser);
-    localStorage.setItem('mockUser', JSON.stringify(updatedUser));
-    setLoading(false);
-  };
-
-  const signInWithEmail = async (email: string, _pass: string) => {
-    setLoading(true);
-    setError(null);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const mockUser: User = { id: 'mock-user-id-email', email: email, displayName: email.split('@')[0] };
-    setUser(mockUser);
-    localStorage.setItem('mockUser', JSON.stringify(mockUser));
-    setLoading(false);
-    router.push('/dashboard');
-  };
-
-  const signUpWithEmail = async (email: string, _pass: string) => {
-    setLoading(true);
-    setError(null);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const mockUser: User = { id: 'mock-user-id-signup', email: email, displayName: email.split('@')[0] };
-    setUser(mockUser);
-    localStorage.setItem('mockUser', JSON.stringify(mockUser));
-    setLoading(false);
-    router.push('/dashboard');
   };
   
+  const updateUserProfile = async (newDetails: { displayName?: string, photoURL?: string }) => {
+    if (!auth.currentUser) throw new Error("User not logged in.");
+    setLoading(true);
+    try {
+      await updateProfile(auth.currentUser, newDetails);
+      setUser(auth.currentUser); // Manually update state to reflect change immediately
+      
+      // Update the user document in Firestore as well
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(userDocRef, { 
+        displayName: newDetails.displayName,
+        photoURL: newDetails.photoURL 
+      }, { merge: true });
+
+    } catch (e: any) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signInWithEmail = async (email: string, pass: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+      await createUserDocument(userCredential.user);
+      router.push('/dashboard');
+    } catch (e: any) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signUpWithEmail = async (email: string, pass: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(userCredential.user, { displayName: email.split('@')[0] });
+      await createUserDocument(userCredential.user);
+      router.push('/dashboard');
+    } catch (e: any) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const signInWithGoogle = async () => {
     setLoading(true);
     setError(null);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const mockUser: User = { id: 'mock-user-id-google', email: 'googleuser@example.com', displayName: 'Google User', photoURL: 'https://placehold.co/100x100.png' };
-    setUser(mockUser);
-    localStorage.setItem('mockUser', JSON.stringify(mockUser));
-    setLoading(false);
-    router.push('/dashboard');
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      await createUserDocument(userCredential.user);
+      router.push('/dashboard');
+    } catch (e: any) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signOut = async () => {
-    setLoading(true);
-    setError(null);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    setUser(null);
-    localStorage.removeItem('mockUser');
-    setLoading(false);
+    await firebaseSignOut(auth);
     router.push('/login');
   };
 

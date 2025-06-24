@@ -8,26 +8,30 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { getAggregatedStats, type AggregatedStats } from '@/lib/userData'; 
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import { useAuth } from '../auth-provider';
 
 export default function MiniDashboard() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<AggregatedStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    const fetchStats = () => {
-      if (typeof window !== 'undefined') {
-        const currentStats = getAggregatedStats();
-        setStats(currentStats);
-        setIsLoadingStats(false);
+    const fetchStats = async () => {
+      if (user) {
+        setIsLoadingStats(true);
+        try {
+          const currentStats = await getAggregatedStats();
+          setStats(currentStats);
+        } catch (error) {
+          console.error("Error fetching stats:", error);
+        } finally {
+          setIsLoadingStats(false);
+        }
       }
     };
     
     fetchStats();
-
-    const handleStatsUpdated = () => fetchStats();
-    window.addEventListener('statsUpdated', handleStatsUpdated);
-    return () => window.removeEventListener('statsUpdated', handleStatsUpdated);
-  }, []);
+  }, [user]);
 
   const summaryData = stats ? [
     { title: "Total Boundaries Defined", value: String(stats.totalDefined), icon: Target },

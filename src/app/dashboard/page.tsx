@@ -15,27 +15,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { getAggregatedStats, type AggregatedStats } from '@/lib/userData'; 
+import { useAuth } from '@/components/auth-provider';
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<AggregatedStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    const fetchStats = () => {
-      if (typeof window !== 'undefined') {
-        const currentStats = getAggregatedStats();
-        setStats(currentStats);
-        setIsLoadingStats(false);
+    const fetchStats = async () => {
+      if (user) {
+        setIsLoadingStats(true);
+        try {
+          const currentStats = await getAggregatedStats();
+          setStats(currentStats);
+        } catch (error) {
+          console.error("Error fetching stats:", error);
+          // Handle error state in UI if needed
+        } finally {
+          setIsLoadingStats(false);
+        }
       }
     };
     
     fetchStats();
-
-    const handleStatsUpdated = () => fetchStats();
-    window.addEventListener('statsUpdated', handleStatsUpdated);
-    return () => window.removeEventListener('statsUpdated', handleStatsUpdated);
-
-  }, []);
+  }, [user]);
 
 
   const summaryData = stats ? [

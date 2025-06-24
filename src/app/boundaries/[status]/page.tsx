@@ -9,6 +9,7 @@ import { getBoundaries, type LoggedBoundary, type BoundaryStatus } from '@/lib/u
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Inbox, AlertTriangle, CheckCircle, Hourglass, ListChecks } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/components/auth-provider';
 
 type StatusParam = BoundaryStatus | 'all';
 
@@ -23,18 +24,28 @@ export default function BoundariesListPage() {
   const router = useRouter();
   const params = useParams();
   const status = params.status as StatusParam;
+  const { user } = useAuth();
 
   const [boundaries, setBoundaries] = useState<LoggedBoundary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (status) {
-      setIsLoading(true);
-      const fetchedBoundaries = getBoundaries(status);
-      setBoundaries(fetchedBoundaries);
-      setIsLoading(false);
+    if (status && user) {
+      const fetchBoundaries = async () => {
+        setIsLoading(true);
+        try {
+          const fetchedBoundaries = await getBoundaries(status);
+          setBoundaries(fetchedBoundaries);
+        } catch (error) {
+          console.error("Error fetching boundaries:", error);
+          // Optionally set an error state to show in the UI
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchBoundaries();
     }
-  }, [status]);
+  }, [status, user]);
 
   const config = statusPageConfig[status] || statusPageConfig.all;
 
